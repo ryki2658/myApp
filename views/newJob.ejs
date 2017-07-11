@@ -1,0 +1,106 @@
+<% include partials/header %>
+	<h1>Add Job<h1>
+	<% if (errors){ %>
+		<ul>
+		<% errors.forEach(function(error){ %>
+		<li><%= error.msg %></li>
+		<% }) %>
+		</ul>
+	<% } %>	
+	<div class="container">
+  <div class="row">
+    <div class="col-md-6 col-md-offset-2">
+      <div class="well well-sm">
+        <legend class="text-center">Add New Job</legend>
+
+        <form class="form-horizontal" action="/jobs/add" method="POST">
+          <fieldset>
+            <!-- Job ID-->
+            <div class="form-group">
+              <label class="col-md-4">Job ID</label>
+              <div class="col-md-9">
+                <input class="form-control"name="job_id" type="text" placeholder="Job ID" >
+              </div>
+            </div>
+            
+            <!-- Location input-->
+            <div class="form-group">
+              <label class="col-md-4">Location</label>
+              <div class="col-md-9">
+                <select class="form-control" name="job_location">
+                  <option value=""></option>
+                  <option value="Anna Smith Elementary">Anna Smith Elementary</option>
+                  <option value="Blue Peak High">Blue Peak High</option>
+                  <option value="Bus Garage">Bus Garage</option>
+                  <option value="Clarke N Johnsen Junior High">Clarke N Johnsen Junior High</option>
+                  <option value="Community Learning Center">Community Learning Center</option>
+                  <option value="Copper Canyon Elementary">Copper Canyon Elementary</option>
+                  <option value="Dugway">Dugway</option>
+                  <option value="Early Learning Center">Early Learning Center</option>
+                  <option value="Food Service">Food Service</option>
+                  <option value="Grantsville Elementary">Grantsville Elementary</option>
+                  <option value="Grantsville High">Grantsville High</option>
+                  <option value="Grantsville Junior High">Grantsville Junior High</option>
+                  <option value="Ibapah Elementary">Ibapah Elementary</option>
+                  <option value="Middle Canyon Elementary">Middle Canyon Elementary</option>
+                  <option value="North Lake Elementary">North Lake Elementary</option>
+                  <option value="Old Mill Elementary">Old Mill Elementary</option>
+                  <option value="Overlake Elementary">Overlake Elementary</option>
+                  <option value="Rose Springs Elementary">Rose Springs Elementary</option>
+                  <option value="Settlement Canyon Elementary">Settlement Canyon Elementary</option>
+                  <option value="Shop">Shop</option>
+                  <option value="Stansbury High">Stansbury High</option>
+                  <option value="Stansbury Park Elementary">Stansbury Park Elementary</option>
+                  <option value="Sterling Elementary">Sterling Elementary</option>
+                  <option value="Tooele High">Tooele High</option>
+                  <option value="Tooele Junior High">Tooele Junior High</option>
+                  <option value="Vernon Elementary">Vernon Elementary</option>
+                  <option value="Wendover High">Wendover High</option>
+                  <option value="West Elementary">West Elementary</option>
+                  <option value="Willow Elementary">Willow Elementary</option>
+                </select>
+              </div>
+            </div>
+    
+            <!-- Description body -->
+            <div class="form-group">
+              <label class="col-md-4">Job Description</label>
+              <div class="col-md-9">
+                <textarea class="form-control" name="job_description" placeholder="Please describe your project..." rows="5"></textarea>
+              </div>
+            </div>
+
+            <!-- Notes -->
+            <div class="form-group">
+              <label class="col-md-4">Job Notes</label>
+              <div class="col-md-9">
+                <textarea class="form-control" name="job_notes" placeholder="Project notes..." rows="10"></textarea>
+              </div>
+            </div>
+    
+            <!-- Form actions -->
+            <div class="form-group">
+              <div class="col-md-12 text-right">
+                <input type="submit" name="submit" value="Send" />
+              </div>
+            </div>
+          </fieldset>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+	<h1><%= title %></h1>
+	<ul>
+	<% jobs.forEach(function(job){ %>
+		<li><%= job.job_id %></li>
+		<li><%= job.job_location %></li>
+		<li><%= job.job_description %></li>
+		<li><%= job.job_notes %></li>
+	<% }) %>
+	</ul>
+
+  <h2><%= user %></h2>
+
+<% include partials/footer %>
+	
