@@ -61,7 +61,6 @@ module.exports = function(app, passport) {
     app.get('/createJob', isLoggedIn, function(req, res){
         db.Jobs.find(function (err, docs) {
         // docs is an array of all the documents in mycollection
-            console.log(docs);
             res.render('newJob', {
                 title: 'Jobs',
                 jobs: docs,

@@ -1,13 +1,13 @@
 <% include partials/header %>
-	<h1>Add Job<h1>
-	<% if (errors){ %>
-		<ul>
-		<% errors.forEach(function(error){ %>
-		<li><%= error.msg %></li>
-		<% }) %>
-		</ul>
-	<% } %>	
-	<div class="container">
+  <h1>Add Job<h1>
+  <% if (errors){ %>
+    <ul>
+    <% errors.forEach(function(error){ %>
+    <li><%= error.msg %></li>
+    <% }) %>
+    </ul>
+  <% } %> 
+  <div class="container">
   <div class="row">
     <div class="col-md-6 col-md-offset-2">
       <div class="well well-sm">
@@ -90,17 +90,6 @@
     </div>
   </div>
 </div>
-	<h1><%= title %></h1>
-	<ul>
-	<% jobs.forEach(function(job){ %>
-		<li><%= job.job_id %></li>
-		<li><%= job.job_location %></li>
-		<li><%= job.job_description %></li>
-		<li><%= job.job_notes %></li>
-	<% }) %>
-	</ul>
-
-  <h2><%= user %></h2>
 
 <% include partials/footer %>
-	
+  
