@@ -81,7 +81,7 @@ module.exports = function(app, passport) {
     });
     // Filter based on selection
     app.post('/jobs/filter', function(req, res){
-        if(req.body.sort_selection == ''){  //Reload the table with all the users jobs on empty filter sort_selection
+        if(req.body.sort_selection == 'All'){  //Reload the table with all the users jobs on empty filter sort_selection
             db.Jobs.find({ 'user' : req.user._id }).toArray(function(err,docs){
                 res.render('tables', {
                     title : 'Tables',
@@ -136,7 +136,7 @@ module.exports = function(app, passport) {
                     if(err){
                         console.log(err);
                     }
-                    res.redirect('/profile');
+                    res.redirect('/tables');
                 });
             }
             console.log(newJob);

@@ -1,5 +1,4 @@
 <% include partials/header %>
-  <h1>Add Job<h1>
   <% if (errors){ %>
     <ul>
     <% errors.forEach(function(error){ %>
@@ -9,7 +8,7 @@
   <% } %> 
   <div class="container">
   <div class="row">
-    <div class="col-md-6 col-md-offset-2">
+    <div class="col-md-12">
       <div class="well well-sm">
         <legend class="text-center">Add New Job</legend>
 
@@ -18,7 +17,7 @@
             <!-- Job ID-->
             <div class="form-group">
               <label class="col-md-4">Job ID</label>
-              <div class="col-md-9">
+              <div class="col-md-12">
                 <input class="form-control"name="job_id" type="text" placeholder="Job ID" >
               </div>
             </div>
@@ -26,7 +25,7 @@
             <!-- Location input-->
             <div class="form-group">
               <label class="col-md-4">Location</label>
-              <div class="col-md-9">
+              <div class="col-md-12">
                 <select class="form-control" name="job_location">
                   <option value=""></option>
                   <option value="Anna Smith Elementary">Anna Smith Elementary</option>
@@ -65,7 +64,7 @@
             <!-- Description body -->
             <div class="form-group">
               <label class="col-md-4">Job Description</label>
-              <div class="col-md-9">
+              <div class="col-md-12">
                 <textarea class="form-control" name="job_description" placeholder="Please describe your project..." rows="5"></textarea>
               </div>
             </div>
@@ -73,7 +72,7 @@
             <!-- Notes -->
             <div class="form-group">
               <label class="col-md-4">Job Notes</label>
-              <div class="col-md-9">
+              <div class="col-md-12">
                 <textarea class="form-control" name="job_notes" placeholder="Project notes..." rows="10"></textarea>
               </div>
             </div>
@@ -81,7 +80,7 @@
             <!-- Form actions -->
             <div class="form-group">
               <div class="col-md-12 text-right">
-                <input type="submit" name="submit" value="Send" />
+                <button type="submit" value="execute">Create Job</button>
               </div>
             </div>
           </fieldset>
