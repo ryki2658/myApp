@@ -16,6 +16,7 @@ var session      = require('express-session');
 var expressValidator = require('express-validator');
 var configDB = require('./config/database.js');
 var configJobsDB = require('./config/jobs_db.js');
+
 // configuration ===============================================================
 //mongoose.connect(dbUsers); // connect to our database
 //mongoose.connect('mongodb://localhost/dbUseres');

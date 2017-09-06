@@ -2,6 +2,9 @@
 // Needed for Jobs table in mongoDB
 var mongojs = require('mongojs');
 var db = mongojs('workOrderApp', ['Jobs']);
+var rh = require('../config/rowHandler.json');
+var testID = require('../config/test.js');
+var ObjectId = require("mongodb").ObjectId;
 
 module.exports = function(app, passport) {
 
@@ -53,6 +56,7 @@ module.exports = function(app, passport) {
     // we will use route middleware to verify this (the isLoggedIn function)
     app.get('/profile', isLoggedIn, function(req, res) {
         res.render('profile.ejs', {
+            title : 'Profile',
             user : req.user // get the user out of session and pass to template
         });
     });
@@ -73,12 +77,25 @@ module.exports = function(app, passport) {
     // Table of jobs in workOrderApp collection
     app.get('/tables', isLoggedIn, function(req, res){
         db.Jobs.find({ user : req.user._id }).toArray(function(err, docs){ //Find all the jobs from the logged in user
+            console.log(testID);
             res.render('tables', {
                 title: 'Tables',
-                jobs: docs
+                jobs: docs,
             });
         });
     });
+
+    //Edit Job 
+    app.post('/tables/edit', isLoggedIn, function(req, res){
+        db.Jobs.find({ _id : ObjectId(req.body.editID) }).toArray(function(err,docs){
+            console.log(docs);
+            res.render("editJob", {
+                title : 'Edit',
+                job: docs
+            });
+        });
+    });
+
     // Filter based on selection
     app.post('/jobs/filter', function(req, res){
         if(req.body.sort_selection == 'All'){  //Reload the table with all the users jobs on empty filter sort_selection
@@ -99,7 +116,33 @@ module.exports = function(app, passport) {
         
     });
 
-    // Add new users
+    // Update Job
+    app.post('/jobs/update', isLoggedIn, function(req, res){
+        console.log(req.body.editID);
+
+        var newJob = {
+        job_id: req.body.job_id,
+        job_location: req.body.job_location,
+        job_description: req.body.job_description,
+        job_notes: req.body.job_notes,
+        job_date: new Date(), //Get the date on the fly
+        user: req.user._id //Add user info to mongoDB for showing only data that this user has added in the table.ejs page
+        };
+
+        //Add job to MongoDB
+        var myquery = { _id : ObjectId(req.body.editID) };
+
+        //var newInfo = { $set : {job_notes : req.body.job_notes} };
+        db.jobs.update(myquery, { $set: newJob } , { safe:true}, function(err, result) {
+            if (err) throw err;
+            console.log(myquery);
+            console.log(result);
+        });
+        res.redirect('/tables');
+        console.log(newJob);
+    });
+    
+    // Add new job
     app.post('/jobs/add', isLoggedIn, function(req, res){
 
         // Make sure fields are not empty

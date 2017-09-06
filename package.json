@@ -16,6 +16,7 @@
     "express-passport": "^0.1.0",
     "express-session": "^1.15.3",
     "express-validator": "^3.2.0",
+    "json-stringify": "^1.0.0",
     "method-override": "~1.0.0",
     "mongodb": "^2.2.29",
     "mongojs": "^2.4.0",
