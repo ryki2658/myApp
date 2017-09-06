@@ -131,7 +131,7 @@ module.exports = function(app, passport) {
 
         //Add job to MongoDB
         var myquery = { _id : ObjectId(req.body.editID) };
-        var collection = db.collection('jobs');
+        var collection = db.collection('Jobs');
         //var newInfo = { $set : {job_notes : req.body.job_notes} };
         collection.update(myquery, { $set: newJob }, { safe:true}, function(err, result) {
             if (err) throw err;
