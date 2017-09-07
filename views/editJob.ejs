@@ -15,7 +15,7 @@
         <form class="form-horizontal" action="/jobs/update" method="POST">
           <fieldset>
             <!-- _id for getting the right entry in the DB-->
-            <div class="form-group">
+            <div style="display: none;" class="form-group">
               <input class="form-control" name="editID" type="text" value=<% job.forEach(function(job){ %> <%= job._id %><% }) %>>
             </div>
             <!-- Job ID-->
