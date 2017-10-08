@@ -107,7 +107,9 @@ module.exports = function(passport) {
 
                     newUser.local.email = email;
                     newUser.local.password = newUser.generateHash(password);
-
+                    newUser.local.firstName = req.body.firstName;
+                    newUser.local.lastName = req.body.lastName;
+                    console.log(newUser);
                     newUser.save(function(err) {
                         if (err)
                             throw err;
@@ -117,7 +119,7 @@ module.exports = function(passport) {
                 }
 
             });
-        });
+       });
 
     }));
 };

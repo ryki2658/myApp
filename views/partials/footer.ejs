@@ -1,5 +1,6 @@
 		
-		<footer class="footer" style="padding-top: 50px">
+	</div>
+		<footer class="footer">
         	<div class="container">
          
 	            <div class="copy text-center">
@@ -29,5 +30,30 @@
 
 	    <!-- Bootstrap -->
 	    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+	    <script>
+		// Get the Sidebar
+		var mySidebar = document.getElementById("mySidebar");
+
+		// Get the DIV with overlay effect
+		var overlayBg = document.getElementById("myOverlay");
+
+		// Toggle between showing and hiding the sidebar, and add overlay effect
+		function w3_open() {
+		    if (mySidebar.style.display === 'block') {
+		        mySidebar.style.display = 'none';
+		        overlayBg.style.display = "none";
+		    } else {
+		        mySidebar.style.display = 'block';
+		        overlayBg.style.display = "block";
+		    }
+		}
+
+		// Close the sidebar with the close button
+		function w3_close() {
+		    mySidebar.style.display = "none";
+		    overlayBg.style.display = "none";
+		}
+		</script>
 	</body>
 </html>

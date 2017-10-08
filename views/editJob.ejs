@@ -1,4 +1,4 @@
-<% include partials/header %>
+<% include partials/header_1 %>
   <% if (errors){ %>
     <ul>
     <% errors.forEach(function(error){ %>
@@ -6,9 +6,13 @@
     <% }) %>
     </ul>
   <% } %> 
-  <div class="container">
-  <div class="row">
-    <div class="col-md-12">
+
+<header class="w3-container">
+    <h5 class="text-center" style="padding-top:20px;"><b><i class="fa fa-edit"></i> Edit Job</b></h5>
+</header>
+<br>
+  <div class="col-md-12">
+    <div class="row">
       <div class="well well-sm">
         <legend class="text-center">Edit New Job</legend>
 
@@ -94,6 +98,5 @@
       </div>
     </div>
   </div>
-</div>
 <% include partials/footer %>
   

@@ -66,9 +66,9 @@ module.exports = function(app, passport) {
         db.Jobs.find(function (err, docs) {
         // docs is an array of all the documents in mycollection
             res.render('newJob', {
-                title: 'Jobs',
+                title: 'New Job',
                 jobs: docs,
-                user: req.user._id
+                user: req.user
             });
         });
         
@@ -77,12 +77,24 @@ module.exports = function(app, passport) {
     // Table of jobs in workOrderApp collection
     app.get('/tables', isLoggedIn, function(req, res){
         db.Jobs.find({ user : req.user._id }).toArray(function(err, docs){ //Find all the jobs from the logged in user
-            console.log(testID);
             res.render('tables', {
                 title: 'Tables',
                 jobs: docs,
+                user : req.user
             });
         });
+    });
+
+    //Test route
+    app.get('/test', function(req, res){
+        db.Jobs.find(function(err, docs){
+            res.render('test', {
+                title: 'test',
+                jobs: docs
+
+            });
+        });
+
     });
 
     //Edit Job 
@@ -91,7 +103,8 @@ module.exports = function(app, passport) {
             console.log(docs);
             res.render("editJob", {
                 title : 'Edit',
-                job: docs
+                job: docs,
+                user : req.user
             });
         });
     });
@@ -102,14 +115,16 @@ module.exports = function(app, passport) {
             db.Jobs.find({ 'user' : req.user._id }).toArray(function(err,docs){
                 res.render('tables', {
                     title : 'Tables',
-                    jobs: docs
+                    jobs: docs,
+                    user : req.user
                 });
             });
         } else{ //Get users filter selection from page body
             db.Jobs.find({ 'user' : req.user._id, 'job_location' : req.body.sort_selection }).toArray(function(err, docs){
                 res.render('tables', {
                     title: 'Tables',
-                    jobs: docs
+                    jobs: docs,
+                    user : req.user
                 });
             });
         }

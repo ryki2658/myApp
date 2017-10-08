@@ -1,16 +1,9 @@
-<% include partials/header %>
-  <% if (errors){ %>
-    <ul>
-    <% errors.forEach(function(error){ %>
-    <li><%= error.msg %></li>
-    <% }) %>
-    </ul>
-  <% } %> 
-  <div class="container">
-  <div class="row">
-    <div class="col-md-12">
+<% include partials/header_1 %>
+
+  <div class="col-md-12" style="padding-top: 10px">
+    <div class="row">
       <div class="well well-sm">
-        <legend class="text-center">Add New Job</legend>
+        <legend class="text-center"> <i class="fa fa-plus"></i>Add New Job</legend>
 
         <form class="form-horizontal" action="/jobs/add" method="POST">
           <fieldset>
