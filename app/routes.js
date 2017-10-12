@@ -74,6 +74,28 @@ module.exports = function(app, passport) {
         
     });
 
+    //Equipment location
+    app.get('/equipLoc', isLoggedIn, function(req, res){
+        db.Jobs.find(function(err, docs){
+            res.render('equipLoc', {
+                title: 'Location',
+                jobs: docs,
+                user: req.user
+            });
+        });
+    });
+
+    //Pickup
+    app.get('/pickup', isLoggedIn, function(req, res){
+        db.Jobs.find(function(err, docs){
+            res.render('pickup', {
+                title: 'Pickup',
+                jobs: docs,
+                user: req.user
+            });
+        });
+    });
+
     // Table of jobs in workOrderApp collection
     app.get('/tables', isLoggedIn, function(req, res){
         db.Jobs.find({ user : req.user._id }).toArray(function(err, docs){ //Find all the jobs from the logged in user
@@ -84,19 +106,18 @@ module.exports = function(app, passport) {
             });
         });
     });
-
+/*
     //Test route
     app.get('/test', function(req, res){
         db.Jobs.find(function(err, docs){
-            res.render('test', {
+            res.render('equipLoc', {
                 title: 'test',
-                jobs: docs
-
+                jobs: docs,
+                user: req.user
             });
         });
-
     });
-
+*/
     //Edit Job 
     app.post('/tables/edit', isLoggedIn, function(req, res){
         db.Jobs.find({ _id : ObjectId(req.body.editID) }).toArray(function(err,docs){
