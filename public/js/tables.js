@@ -1,11 +1,3 @@
-$(document).ready(function() {
-    var table = $('#example').DataTable();
-    console.log("rowHandlers");
-    $('#example tbody').on( 'click', 'tr', function () {
-        $(this).toggleClass('selected');
+$('#example').dataTable( {
+        "aaSorting": [[ 5, "desc" ]] // column #7 sorted (zero indexed)
     } );
- 
-    $('#button').click( function () {
-        alert( table.rows('.selected').data().length +' row(s) selected' );
-    } );
-} );
