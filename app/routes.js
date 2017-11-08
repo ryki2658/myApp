@@ -5,8 +5,12 @@ var db = mongojs('workOrderApp', ['Jobs']);
 var rh = require('../config/rowHandler.json');
 var testID = require('../config/test.js');
 var ObjectId = require("mongodb").ObjectId;
+var favicon = require('express-favicon');
 
 module.exports = function(app, passport) {
+
+    //favicon
+    app.use(favicon(__dirname + '/public/favicon.ico'));
 
     // =====================================
     // HOME PAGE (with login links) ========
