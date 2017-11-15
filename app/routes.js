@@ -132,7 +132,7 @@ module.exports = function(app, passport) {
         var errors = req.validationErrors(); //errors made avaible in server.js 'gloabal variables'
         var user = req.user._id;
         var date = new Date();
-        db.equipLoc.find(function (err, docs) {
+        db2.equipLoc.find(function (err, docs) {
             if(errors){
                 console.log('ERRORS');
                 res.render('index', {
