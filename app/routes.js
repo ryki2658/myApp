@@ -2,6 +2,8 @@
 // Needed for mongoDB
 var mongojs = require('mongojs');
 var db = mongojs('workOrderApp', ['Jobs']);
+var db1 = mongojs('workOrderApp', ['pickup']);
+var db2 = mongojs('workOrderApp', ['equipLoc']);
 var fDate = require('../config/formatDate.js');
 var ObjectId = require("mongodb").ObjectId;
 var favicon = require('express-favicon');
@@ -68,7 +70,7 @@ module.exports = function(app, passport) {
     // =====================================
     //Equipment location
     app.get('/equipLoc', isLoggedIn, function(req, res){
-        db.equipLoc.find(function(err, docs){
+        db2.equipLoc.find(function(err, docs){
             res.render('equipLoc', {
                 title: 'Location',
                 equipment: docs,
@@ -78,7 +80,7 @@ module.exports = function(app, passport) {
     });
 
     app.post('/equipLoc/edit', isLoggedIn, function(req, res){
-        db.equipLoc.find({ _id : ObjectId(req.body.editID) }).toArray(function(err,docs){
+        db2.equipLoc.find({ _id : ObjectId(req.body.editID) }).toArray(function(err,docs){
             res.render("editEquipmentLoc", {
                 title : 'Edit',
                 equipLoc: docs,
@@ -111,7 +113,7 @@ module.exports = function(app, passport) {
 
     // Add new equipment input page
     app.get('/createEquipment', isLoggedIn, function(req, res){
-        db.equipLoc.find(function (err, docs) {
+        db2.equipLoc.find(function (err, docs) {
             if (err) {
                 throw err;
             }
@@ -150,7 +152,7 @@ module.exports = function(app, passport) {
                     user: user //Add user info to mongoDB for showing only data that this user has added in the table.ejs page
                 };
                 //Add to MongoDB
-                db.equipLoc.insert(newEquip, function(err, result){
+                db2.equipLoc.insert(newEquip, function(err, result){
                     if(err){
                         console.log(err);
                     }
@@ -164,7 +166,7 @@ module.exports = function(app, passport) {
     // =====================================
     //Pickup
     app.get('/pickup', isLoggedIn, function(req, res){
-        db.pickup.find(function(err, docs){
+        db1.pickup.find(function(err, docs){
             res.render('pickup', {
                 title: 'Pickup',
                 items: docs,
@@ -174,7 +176,7 @@ module.exports = function(app, passport) {
     });
 
     app.post('/pickup/edit', isLoggedIn, function(req, res) {
-        db.pickup.find({ _id : ObjectId(req.body.editID) }).toArray(function(err, docs) {
+        db1.pickup.find({ _id : ObjectId(req.body.editID) }).toArray(function(err, docs) {
             console.log(req.body.editID);
             res.render('editPickup', {
                 title : 'Edit',
@@ -203,7 +205,7 @@ module.exports = function(app, passport) {
 
     //Add new pickup item input page
     app.get('/createPickup', isLoggedIn, function(req, res) {
-        db.pickup.find(function(err, docs) {
+        db1.pickup.find(function(err, docs) {
             res.render('newPickup', {
                 title : 'New Item',
                 items : docs,
@@ -219,7 +221,7 @@ module.exports = function(app, passport) {
             var myquery = { _id : ObjectId(req.body.editID) };
             //var collection = db.collection('pickup');
             //db.pickup.remove({_id : ObjectId("5a0a116e669b710303f4d233")});
-            db.pickup.remove(myquery, { safe:true}, function(err, result) {
+            db1.pickup.remove(myquery, { safe:true}, function(err, result) {
                 if (err) throw err;
             });
             res.redirect('/pickup');
@@ -230,7 +232,7 @@ module.exports = function(app, passport) {
         // Check for errors
         var errors = req.validationErrors();//errors made avaible in server.js 'gloabal variables'
         var user = req.user._id;
-        db.pickup.find(function(err, docs) {
+        db1.pickup.find(function(err, docs) {
             if(errors){
                 console.log('ERRORS');
                 res.render('index', {
@@ -245,7 +247,7 @@ module.exports = function(app, passport) {
                     paid : req.body.pickup_paid
                 };
                 //Add to DB
-                db.pickup.insert(newPickup, function(err, result) {
+                db1.pickup.insert(newPickup, function(err, result) {
                     if (err){
                         console.log(err);
                     }
