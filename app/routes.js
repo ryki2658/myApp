@@ -112,6 +112,9 @@ module.exports = function(app, passport) {
     // Add new equipment input page
     app.get('/createEquipment', isLoggedIn, function(req, res){
         db.equipLoc.find(function (err, docs) {
+            if (err) {
+                throw err;
+            }
             res.render('newEquip', {
                 title: 'New Equipment',
                 equipment: docs,
