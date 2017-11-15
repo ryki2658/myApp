@@ -1,0 +1,49 @@
+<% include partials/header_1 %>
+
+  <div class="col-md-12" style="padding-top: 10px">
+    <div class="row">
+      <div class="well well-sm">
+        <legend class="text-center"> <i class="fa fa-plus"></i>Add New pickup</legend>
+
+        <form class="form-horizontal" action="/pickup/add" method="POST">
+          <fieldset>
+            
+            <!-- Location input-->
+            <div class="form-group">
+              <label class="col-md-4">Pickup</label>
+              <div class="col-md-12">
+                <input class="form-control" name="pickup_location" type="text" placeholder="Name of company" >
+              </div>
+            </div>
+                
+            <!-- Description body -->
+            <div class="form-group">
+              <label class="col-md-4">Details</label>
+              <div class="col-md-12">
+                <textarea class="form-control" name="pickup_details" placeholder="Add any aditional details..." rows="5"></textarea>
+              </div>
+            </div>
+
+            <!-- Paid body -->
+            <div class="form-group">
+              <label class="col-md-4">Paid</label>
+              <div class="col-md-12">
+                <textarea class="form-control" name="pickup_paid" placeholder="Add any aditional details..." rows="1"></textarea>
+              </div>
+            </div>
+    
+            <!-- Form actions -->
+            <div class="form-group">
+              <div class="col-md-12 text-right">
+                <button type="submit" value="execute">Add Item</button>
+              </div>
+            </div>
+          </fieldset>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% include partials/footer %>
+  

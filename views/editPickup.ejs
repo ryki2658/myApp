@@ -1,0 +1,66 @@
+<% include partials/header_1 %>
+  <% if (errors){ %>
+    <ul>
+    <% errors.forEach(function(error){ %>
+    <li><%= error.msg %></li>
+    <% }) %>
+    </ul>
+  <% } %> 
+
+<header class="w3-container">
+    <h5 class="text-center" style="padding-top:20px;"><b><i class="fa fa-edit"></i> Edit</b></h5>
+</header>
+<br>
+  <div class="col-md-12">
+    <div class="row">
+      <div class="well well-sm">
+        <legend class="text-center">Edit Pickup Item</legend>
+
+        <form class="form-horizontal" action="/pickup/update" method="POST">
+          <fieldset>
+            <!-- _id for getting the right entry in the DB-->
+            <div style="display: none;" class="form-group">
+              <input class="form-control" name="editID" type="text" value=<% items.forEach(function(i){ %> <%= i._id %><% }) %>>
+            </div>
+            <!-- Location input-->
+            <div class="form-group">
+              <label class="col-md-4">Location</label>
+              <div class="col-md-12">
+                <input class="form-control" name="pickup_location" type="text" value="<% items.forEach(function(i){ %> <%= i.location %><% }) %>">
+              </div>
+            </div>
+    
+            <!-- Details body -->
+            <div class="form-group">
+              <label class="col-md-4">Details</label>
+              <div class="col-md-12">
+                <textarea class="form-control" name="pickup_details" rows="5"><% items.forEach(function(i){ %> <%= i.details %><% }) %></textarea>
+              </div>
+            </div>
+
+            <!-- Paid body -->
+            <div class="form-group">
+              <label class="col-md-4">Paid</label>
+              <div class="col-md-12">
+                <textarea class="form-control" name="pickup_paid" rows="1"><% items.forEach(function(i){ %> <%= i.paid %><% }) %></textarea>
+              </div>
+            </div>
+    
+            <!-- Form actions -->
+            <div class="form-group">
+              <div class="col-md-12 text-right">
+
+                <button type="submit" value="execute">Save Changes</button>
+                
+                <button type="submit" formaction="/pickup/delete"><i class="fa fa-trash"></i>Delete</button>
+
+                <input action="action" onclick="window.history.go(-1); return false;" type="button" value="Cancel" />
+              </div>
+            </div>
+          </fieldset>
+        </form>
+      </div>
+    </div>
+  </div>
+<% include partials/footer %>
+  

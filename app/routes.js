@@ -1,9 +1,8 @@
 // Should probably be moved
-// Needed for Jobs table in mongoDB
+// Needed for mongoDB
 var mongojs = require('mongojs');
 var db = mongojs('workOrderApp', ['Jobs']);
-var rh = require('../config/rowHandler.json');
-var testID = require('../config/test.js');
+var fDate = require('../config/formatDate.js');
 var ObjectId = require("mongodb").ObjectId;
 var favicon = require('express-favicon');
 
@@ -52,7 +51,6 @@ module.exports = function(app, passport) {
         failureFlash : true // allow flash messages
     }));
 
-    console.log('signup');
     // =====================================
     // PROFILE SECTION =====================
     // =====================================
@@ -65,41 +63,198 @@ module.exports = function(app, passport) {
         });
     });
 
-    // Add new job
-    app.get('/createJob', isLoggedIn, function(req, res){
-        db.Jobs.find(function (err, docs) {
-        // docs is an array of all the documents in mycollection
-            res.render('newJob', {
-                title: 'New Job',
-                jobs: docs,
-                user: req.user
-            });
-        });
-        
-    });
-
+    // =====================================
+    // EQUIPMENT SECTION ===================
+    // =====================================
     //Equipment location
     app.get('/equipLoc', isLoggedIn, function(req, res){
-        db.Jobs.find(function(err, docs){
+        db.equipLoc.find(function(err, docs){
             res.render('equipLoc', {
                 title: 'Location',
-                jobs: docs,
+                equipment: docs,
                 user: req.user
             });
         });
     });
 
+    app.post('/equipLoc/edit', isLoggedIn, function(req, res){
+        db.equipLoc.find({ _id : ObjectId(req.body.editID) }).toArray(function(err,docs){
+            res.render("editEquipmentLoc", {
+                title : 'Edit',
+                equipLoc: docs,
+                user : req.user
+            });
+        });
+    });
+
+    // Update equipment
+    app.post('/equipLoc/update', isLoggedIn, function(req, res){
+        // Get formated date
+        var date = fDate.formatDate();
+
+        var newEquipLocDetails = {
+            equipment: req.body.equipment,
+            equipment_location: req.body.equipment_location,
+            equipment_details: req.body.equipment_details,
+            equipment_date: date
+        };
+
+        //Add newEquipLoc to MongoDB
+        var myquery = { _id : ObjectId(req.body.editID) };
+        var collection = db.collection('equipLoc');
+        //var newInfo = { $set : {job_notes : req.body.job_notes} };
+        collection.update(myquery, { $set: newEquipLocDetails }, { safe:true}, function(err, result) {
+            if (err) throw err;
+        });
+        res.redirect('/equipLoc');
+    });
+
+    // Add new equipment input page
+    app.get('/createEquipment', isLoggedIn, function(req, res){
+        db.equipLoc.find(function (err, docs) {
+            res.render('newEquip', {
+                title: 'New Equipment',
+                equipment: docs,
+                user: req.user
+            });
+        });        
+    });
+
+    // Add new equipment
+    app.post('/equipment/add', isLoggedIn, function(req, res){
+
+        // Check for errors
+        var errors = req.validationErrors(); //errors made avaible in server.js 'gloabal variables'
+        var user = req.user._id;
+        var date = new Date();
+        db.equipLoc.find(function (err, docs) {
+            if(errors){
+                console.log('ERRORS');
+                res.render('index', {
+                    title: 'Jobs',
+                    equipment: docs,
+                    user: user,
+                    errors: errors
+                });
+            } else {
+                // Get formated date
+                var date = fDate.formatDate();
+                var newEquip = {
+                    equipment: req.body.equipment,
+                    equipment_location: req.body.equipment_location,
+                    equipment_details: req.body.equipment_details,
+                    equipment_date: date, //Get the date on the fly
+                    user: user //Add user info to mongoDB for showing only data that this user has added in the table.ejs page
+                };
+                //Add to MongoDB
+                db.equipLoc.insert(newEquip, function(err, result){
+                    if(err){
+                        console.log(err);
+                    }
+                    res.redirect('/equipLoc');
+                });
+            }
+        });
+    });
+    // =====================================
+    // PICKUP SECTION ======================
+    // =====================================
     //Pickup
     app.get('/pickup', isLoggedIn, function(req, res){
-        db.Jobs.find(function(err, docs){
+        db.pickup.find(function(err, docs){
             res.render('pickup', {
                 title: 'Pickup',
-                jobs: docs,
+                items: docs,
                 user: req.user
             });
         });
     });
 
+    app.post('/pickup/edit', isLoggedIn, function(req, res) {
+        db.pickup.find({ _id : ObjectId(req.body.editID) }).toArray(function(err, docs) {
+            console.log(req.body.editID);
+            res.render('editPickup', {
+                title : 'Edit',
+                items : docs,
+                user : req.user
+            });
+        });
+    });
+
+    //Update pickup item
+    app.post('/pickup/update', isLoggedIn, function(req, res) {
+
+        var newPickup = {
+            location : req.body.pickup_location,
+            details : req.body.pickup_details,
+            paid : req.body.pickup_paid
+        };
+        //Add new pickup item to DB
+        var myquery = { _id : ObjectId(req.body.editID) };
+        var collection = db.collection('pickup');
+        collection.update(myquery, {$set: newPickup}, { safe:true}, function(err, result) {
+            if (err) throw err;
+        });
+        res.redirect('/pickup');
+    });
+
+    //Add new pickup item input page
+    app.get('/createPickup', isLoggedIn, function(req, res) {
+        db.pickup.find(function(err, docs) {
+            res.render('newPickup', {
+                title : 'New Item',
+                items : docs,
+                user : req.user
+            });
+        });
+    });
+
+    // Remove item
+    app.post('/pickup/delete', isLoggedIn, function(req, res) {
+            //remove from DB
+            console.log('HI- ' +req.body.editID);
+            var myquery = { _id : ObjectId(req.body.editID) };
+            //var collection = db.collection('pickup');
+            //db.pickup.remove({_id : ObjectId("5a0a116e669b710303f4d233")});
+            db.pickup.remove(myquery, { safe:true}, function(err, result) {
+                if (err) throw err;
+            });
+            res.redirect('/pickup');
+    });
+
+    // Add new pickup item
+    app.post('/pickup/add', isLoggedIn, function(req, res) {
+        // Check for errors
+        var errors = req.validationErrors();//errors made avaible in server.js 'gloabal variables'
+        var user = req.user._id;
+        db.pickup.find(function(err, docs) {
+            if(errors){
+                console.log('ERRORS');
+                res.render('index', {
+                    title : 'oops',
+                    user : user,
+                    errors : errors
+                });
+            } else {
+                var newPickup = {
+                    location : req.body.pickup_location,
+                    details : req.body.pickup_details,
+                    paid : req.body.pickup_paid
+                };
+                //Add to DB
+                db.pickup.insert(newPickup, function(err, result) {
+                    if (err){
+                        console.log(err);
+                    }
+                    res.redirect('/pickup');
+                });
+            }
+        });
+    });
+
+    // =====================================
+    // JOBS SECTION ========================
+    // =====================================
     // Table of jobs in workOrderApp collection
     app.get('/tables', isLoggedIn, function(req, res){
         db.Jobs.find({ user : req.user._id }).toArray(function(err, docs){ //Find all the jobs from the logged in user
@@ -110,18 +265,7 @@ module.exports = function(app, passport) {
             });
         });
     });
-/*
-    //Test route
-    app.get('/test', function(req, res){
-        db.Jobs.find(function(err, docs){
-            res.render('equipLoc', {
-                title: 'test',
-                jobs: docs,
-                user: req.user
-            });
-        });
-    });
-*/
+
     //Edit Job 
     app.post('/tables/edit', isLoggedIn, function(req, res){
         db.Jobs.find({ _id : ObjectId(req.body.editID) }).toArray(function(err,docs){
@@ -165,7 +309,7 @@ module.exports = function(app, passport) {
         job_location: req.body.job_location,
         job_description: req.body.job_description,
         job_notes: req.body.job_notes,
-        job_date: new Date(), //Get the date on the fly
+        job_date: fDate.formatDate(), //Get the date on the fly
         user: req.user._id //Add user info to mongoDB for showing only data that this user has added in the table.ejs page
         };
 
@@ -181,7 +325,19 @@ module.exports = function(app, passport) {
         res.redirect('/tables');
         console.log(newJob);
     });
-    
+
+    // Add new job input page
+    app.get('/createJob', isLoggedIn, function(req, res){
+        db.Jobs.find(function (err, docs) {
+            res.render('newJob', {
+                title: 'New Job',
+                jobs: docs,
+                user: req.user
+            });
+        });
+        
+    });
+
     // Add new job
     app.post('/jobs/add', isLoggedIn, function(req, res){
 
@@ -189,12 +345,11 @@ module.exports = function(app, passport) {
         req.checkBody('job_id', 'Job Id is required ').notEmpty();
         req.checkBody('job_location', 'Job Location is required ').notEmpty();
         req.checkBody('job_description', 'Job Description is required ').notEmpty();
-        req.checkBody('job_notes', 'Job Notes is required ').notEmpty();
+        //req.checkBody('job_notes', 'Job Notes is required ').notEmpty();
 
         // Check for errors
         var errors = req.validationErrors(); //errors made avaible in server.js 'gloabal variables'
         var user = req.user._id;
-        var date = new Date();
         db.Jobs.find(function (err, docs) {
             if(errors){
                 console.log('ERRORS');
@@ -211,7 +366,7 @@ module.exports = function(app, passport) {
                     job_location: req.body.job_location,
                     job_description: req.body.job_description,
                     job_notes: req.body.job_notes,
-                    job_date: date, //Get the date on the fly
+                    job_date: fDate.formatDate(), //Get the date on the fly
                     user: user //Add user info to mongoDB for showing only data that this user has added in the table.ejs page
                 };
                 //Add job to MongoDB

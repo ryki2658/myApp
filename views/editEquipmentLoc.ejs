@@ -1,0 +1,94 @@
+<% include partials/header_1 %>
+  <% if (errors){ %>
+    <ul>
+    <% errors.forEach(function(error){ %>
+    <li><%= error.msg %></li>
+    <% }) %>
+    </ul>
+  <% } %> 
+
+<header class="w3-container">
+    <h5 class="text-center" style="padding-top:20px;"><b><i class="fa fa-edit"></i> Edit</b></h5>
+</header>
+<br>
+  <div class="col-md-12">
+    <div class="row">
+      <div class="well well-sm">
+        <legend class="text-center">Edit Equipment Location</legend>
+
+        <form class="form-horizontal" action="/equipLoc/update" method="POST">
+          <fieldset>
+            <!-- _id for getting the right entry in the DB-->
+            <div style="display: none;" class="form-group">
+              <input class="form-control" name="editID" type="text" value=<% equipLoc.forEach(function(e){ %> <%= e._id %><% }) %>>
+            </div>
+            <!-- Equipment input-->
+            <div class="form-group">
+              <label class="col-md-4">Equipment</label>
+              <div class="col-md-12">
+                <input class="form-control" name="equipment" type="text" value="<% equipLoc.forEach(function(e){ %> <%= e.equipment %><% }) %>">
+              </div>
+            </div>
+            
+            <!-- Location input-->
+            <div class="form-group">
+              <label class="col-md-4">Location</label>
+              <div class="col-md-12">
+                <select class="form-control" name="equipment_location">
+                  <option value="<% equipLoc.forEach(function(e){ %> <%= e.equipment_location %><% }) %>"><% equipLoc.forEach(function(e){ %> <%= e.equipment_location %><% }) %></option>
+                  <option value="Anna Smith Elementary">Anna Smith Elementary</option>
+                  <option value="Blue Peak High">Blue Peak High</option>
+                  <option value="Bus Garage">Bus Garage</option>
+                  <option value="Clarke N Johnsen Junior High">Clarke N Johnsen Junior High</option>
+                  <option value="Community Learning Center">Community Learning Center</option>
+                  <option value="Copper Canyon Elementary">Copper Canyon Elementary</option>
+                  <option value="District Office">District Office</option>
+                  <option value="Dugway">Dugway</option>
+                  <option value="Early Learning Center">Early Learning Center</option>
+                  <option value="Food Service">Food Service</option>
+                  <option value="Grantsville Elementary">Grantsville Elementary</option>
+                  <option value="Grantsville High">Grantsville High</option>
+                  <option value="Grantsville Junior High">Grantsville Junior High</option>
+                  <option value="Ibapah Elementary">Ibapah Elementary</option>
+                  <option value="Middle Canyon Elementary">Middle Canyon Elementary</option>
+                  <option value="North Lake Elementary">North Lake Elementary</option>
+                  <option value="Old Mill Elementary">Old Mill Elementary</option>
+                  <option value="Overlake Elementary">Overlake Elementary</option>
+                  <option value="Rose Springs Elementary">Rose Springs Elementary</option>
+                  <option value="Settlement Canyon Elementary">Settlement Canyon Elementary</option>
+                  <option value="Shop">Shop</option>
+                  <option value="Stansbury High">Stansbury High</option>
+                  <option value="Stansbury Park Elementary">Stansbury Park Elementary</option>
+                  <option value="Sterling Elementary">Sterling Elementary</option>
+                  <option value="Tooele High">Tooele High</option>
+                  <option value="Tooele Junior High">Tooele Junior High</option>
+                  <option value="Vernon Elementary">Vernon Elementary</option>
+                  <option value="Wendover High">Wendover High</option>
+                  <option value="West Elementary">West Elementary</option>
+                  <option value="Willow Elementary">Willow Elementary</option>
+                </select>
+              </div>
+            </div>
+    
+            <!-- Details body -->
+            <div class="form-group">
+              <label class="col-md-4">Details</label>
+              <div class="col-md-12">
+                <textarea class="form-control" name="equipment_details" rows="5"><% equipLoc.forEach(function(e){ %> <%= e.equipment_details %><% }) %></textarea>
+              </div>
+            </div>
+    
+            <!-- Form actions -->
+            <div class="form-group">
+              <div class="col-md-12 text-right">
+                <button type="submit" value="execute">Save Changes</button>
+                <input action="action" onclick="window.history.go(-1); return false;" type="button" value="Back" />
+              </div>
+            </div>
+          </fieldset>
+        </form>
+      </div>
+    </div>
+  </div>
+<% include partials/footer %>
+  

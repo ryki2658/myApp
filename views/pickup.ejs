@@ -2,31 +2,45 @@
 <!-- Equipment Locations -->
 
 <header class="w3-container" style="padding-top: 20px;">
-	<h5 class="text-center"><b><i class="fa fa-map"></i> Pick-Up</b></h5>
+	<h4 class="text-center"><b><i class="fa fa-map"></i> Pick-Up</b></h4>
+	<h6 class="text-center">(click on item to edit)</h6>
 </header>
 <br>
 <div class="col-md-12">
 	<div class="row">
 		<div class="content-box-large">
-			<form id="tableID" action="/tables/edit" method="POST">
+			<form id="tableID" action="/pickup/edit" method="POST">
 		       	<div class="col-md-12">
   					<div class="panel-body">
-  						<table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered" id="pickUp">
+  						<table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered" id="example">
 							<thead>
 						        <th>Location</th>
-						        <th>Description</th>
+						        <th>Details</th>
 						        <th>Paid</th>
 							</thead>
-							<tbody>
-								<td>Grainger</td>
-								<td>parts</td>
-								<td>yes</td>
-							</tbody>
+								<tbody>
+									<% items.forEach(function(i){ %>
+										<tr>
+											<td style="display: none;"><%= i._id %></td>
+											<td><%= i.location %></a></td>
+											<td><%= i.details %></td>
+											<td><%= i.paid%></td>
+										</tr>
+									<% }) %>
+								</tbody>
 						</table>
+						<!-- for rowHandlers.js -->
+						<textarea style="display: none;" id="t_id" name="editID">test</textarea>
+						<div class="text-right" >
+							<a href="../createPickup">
+			                	<button type="button"><i class="fa fa-plus"></i>Add New Equip</button>
+			                </a>
+						</div>
 					</div>
 				</div>
 			</form>
 		</div>
 	</div>
 </div>
+<script src="../vendors/datatables/js/rowHandlers.js"></script>
 <% include partials/footer %>
