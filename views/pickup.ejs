@@ -17,6 +17,7 @@
 						        <th>Location</th>
 						        <th>Details</th>
 						        <th>Paid</th>
+						        <th>P.O.</th>
 							</thead>
 								<tbody>
 									<% items.forEach(function(i){ %>
@@ -25,6 +26,7 @@
 											<td><%= i.location %></a></td>
 											<td><%= i.details %></td>
 											<td><%= i.paid%></td>
+											<td><%= i.po%></td>
 										</tr>
 									<% }) %>
 								</tbody>

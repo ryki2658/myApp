@@ -20,13 +20,13 @@
           <fieldset>
             <!-- _id for getting the right entry in the DB-->
             <div style="display: none;" class="form-group">
-              <input class="form-control" name="editID" type="text" value=<% job.forEach(function(job){ %> <%= job._id %><% }) %>>
+              <input class="form-control" name="editID" type="text" value=<% job.forEach(function(job){ %><%= job._id %><% }) %>>
             </div>
             <!-- Job ID-->
             <div class="form-group">
               <label class="col-md-4">Job ID</label>
               <div class="col-md-12">
-                <input class="form-control" name="job_id" type="text" value="<% job.forEach(function(job){ %> <%= job.job_id %><% }) %>">
+                <input class="form-control" name="job_id" type="text" value="<% job.forEach(function(job){ %><%= job.job_id %><% }) %>">
               </div>
             </div>
             
@@ -35,7 +35,7 @@
               <label class="col-md-4">Location</label>
               <div class="col-md-12">
                 <select class="form-control" name="job_location">
-                  <option value="<% job.forEach(function(job){ %> <%= job.job_location %><% }) %>"><% job.forEach(function(job){ %> <%= job.job_location %><% }) %></option>
+                  <option value="<% job.forEach(function(job){ %><%= job.job_location %><% }) %>"><% job.forEach(function(job){ %> <%= job.job_location %><% }) %></option>
                   <option value="Anna Smith Elementary">Anna Smith Elementary</option>
                   <option value="Blue Peak High">Blue Peak High</option>
                   <option value="Bus Garage">Bus Garage</option>
@@ -74,7 +74,7 @@
             <div class="form-group">
               <label class="col-md-4">Job Description</label>
               <div class="col-md-12">
-                <textarea class="form-control" name="job_description" rows="5"><% job.forEach(function(job){ %> <%= job.job_description %><% }) %></textarea>
+                <textarea class="form-control" name="job_description" rows="5"><% job.forEach(function(job){ %><%= job.job_description %><% }) %></textarea>
               </div>
             </div>
 
@@ -82,7 +82,7 @@
             <div class="form-group">
               <label class="col-md-4">Job Notes</label>
               <div class="col-md-12">
-                <textarea class="form-control" name="job_notes" rows="10"><% job.forEach(function(job){ %> <%= job.job_notes %><% }) %></textarea>
+                <textarea class="form-control" name="job_notes" rows="10"><% job.forEach(function(job){ %><%= job.job_notes %><% }) %></textarea>
               </div>
             </div>
     

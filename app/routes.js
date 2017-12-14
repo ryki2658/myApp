@@ -174,7 +174,7 @@ module.exports = function(app, passport) {
             });
         });
     });
-
+    //Pickup Edit
     app.post('/pickup/edit', isLoggedIn, function(req, res) {
         db1.pickup.find({ _id : ObjectId(req.body.editID) }).toArray(function(err, docs) {
             console.log(req.body.editID);
@@ -190,9 +190,10 @@ module.exports = function(app, passport) {
     app.post('/pickup/update', isLoggedIn, function(req, res) {
 
         var newPickup = {
-            location : req.body.pickup_location,
-            details : req.body.pickup_details,
-            paid : req.body.pickup_paid
+            location :req.body.pickup_location,
+            details :req.body.pickup_details,
+            paid :req.body.pickup_paid,
+            po :req.body.pickup_po
         };
         //Add new pickup item to DB
         var myquery = { _id : ObjectId(req.body.editID) };
@@ -242,9 +243,10 @@ module.exports = function(app, passport) {
                 });
             } else {
                 var newPickup = {
-                    location : req.body.pickup_location,
-                    details : req.body.pickup_details,
-                    paid : req.body.pickup_paid
+                    location :req.body.pickup_location,
+                    details :req.body.pickup_details,
+                    paid :req.body.pickup_paid,
+                    po :req.body.pickup_po
                 };
                 //Add to DB
                 db1.pickup.insert(newPickup, function(err, result) {
