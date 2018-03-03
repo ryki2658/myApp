@@ -17,7 +17,17 @@ module.exports = function(app, passport) {
     // HOME PAGE (with login links) ========
     // =====================================
     app.get('/', function(req, res) {
-        res.render('index.ejs'); // load the index.ejs file
+        res.render('index.ejs', {
+            title : 'EVO Maint'
+        });// load the index.ejs file
+        
+    });
+
+    app.get('/landing', function(req, res) {
+        res.render('index1.ejs', {
+            title : 'EVO Maint'
+        });// load the index.ejs file
+        
     });
 
     // =====================================
