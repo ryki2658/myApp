@@ -1,16 +1,45 @@
-<% include partials/header_0 %>
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
-<div class="container text-center"  style="padding-top: 50px;">
-    <div class="jumbotron text-center">
-        <h1><span class="fa fa-lock"></span> Work Order Manager </h1>
+<title><%= title %></title>
 
-        <p>Login or Register with:</p>
-        <p style="font-size: 10px;"> (guest login using: email- tcsd, password- 123)<p>
+<!-- jQuery UI -->
+<link href="https://code.jquery.com/ui/1.10.3/themes/redmond/jquery-ui.css" rel="stylesheet" media="screen">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
-        <a href="/login" class="btn btn-default"><span class="fa fa-user"></span> Login</a>
-        <a href="/signup" class="btn btn-default"><span class="fa fa-user"></span> Signup</a>
-    </div>
+<!-- Bootstrap -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 
-</div>
+<!-- W3Schools-->
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="/css/basic.css">
+<style>
+html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
+img {
+    display: block;
+    margin: 0 auto;
+}
+</style>
+<body> 
+
+    
+	<div class="container text-center"  style="padding-top: 50px;">
+    	<div class="jumbotron" text-center">
+	        <h1><span class="fa fa-lock"></span> Work Order Manager </h1>
+
+	        <p>Login or Register with:</p>
+	        <p style="font-size: 10px;"> (guest login using: email- tcsd, password- 123)<p>
+
+	        <a href="/login" class="btn btn-default"><span class="fa fa-user"></span> Login</a>
+	        <a href="/signup" class="btn btn-default"><span class="fa fa-user"></span> Signup</a>
+		</div>
+	</div>
 
 <% include partials/footer %>
