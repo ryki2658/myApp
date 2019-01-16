@@ -17,7 +17,7 @@ module.exports = function(app, passport) {
     // HOME PAGE (with login links) ========
     // =====================================
     app.get('/', function(req, res) {
-        res.render('index.ejs', {
+        res.render('overveiw.ejs', {
             title : 'EVO Maint'
         });// load the index.ejs file
         
@@ -79,7 +79,7 @@ module.exports = function(app, passport) {
     // EQUIPMENT SECTION ===================
     // =====================================
     //Equipment location
-    app.get('/equipLoc', isLoggedIn, function(req, res){
+    app.get('/equipLoc', /*isLoggedIn,*/function(req, res){
         db2.equipLoc.find(function(err, docs){
             res.render('equipLoc', {
                 title: 'Location',
@@ -175,12 +175,12 @@ module.exports = function(app, passport) {
     // PICKUP SECTION ======================
     // =====================================
     //Pickup
-    app.get('/pickup', isLoggedIn, function(req, res){
+    app.get('/pickup', /*isLoggedIn,*/function(req, res){
         db1.pickup.find(function(err, docs){
             res.render('pickup', {
                 title: 'Pickup',
                 items: docs,
-                user: req.user
+                //user: req.user
             });
         });
     });
@@ -415,5 +415,5 @@ function isLoggedIn(req, res, next) {
         return next();
 
     // if they aren't redirect them to the home page
-    res.redirect('/');
+    res.redirect('/login');
 }
