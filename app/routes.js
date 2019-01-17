@@ -89,7 +89,7 @@ module.exports = function(app, passport) {
         });
     });
 
-    app.post('/equipLoc/edit', isLoggedIn, function(req, res){
+    app.post('/equipLoc/edit', /*isLoggedIn,*/ function(req, res){
         db2.equipLoc.find({ _id : ObjectId(req.body.editID) }).toArray(function(err,docs){
             res.render("editEquipmentLoc", {
                 title : 'Edit',
@@ -100,7 +100,7 @@ module.exports = function(app, passport) {
     });
 
     // Update equipment
-    app.post('/equipLoc/update', isLoggedIn, function(req, res){
+    app.post('/equipLoc/update', /*isLoggedIn,*/ function(req, res){
         // Get formated date
         var date = fDate.formatDate();
 
@@ -122,7 +122,7 @@ module.exports = function(app, passport) {
     });
 
     // Add new equipment input page
-    app.get('/createEquipment', isLoggedIn, function(req, res){
+    app.get('/createEquipment', /*isLoggedIn,*/ function(req, res){
         db2.equipLoc.find(function (err, docs) {
             if (err) {
                 throw err;
@@ -136,7 +136,7 @@ module.exports = function(app, passport) {
     });
 
     // Add new equipment
-    app.post('/equipment/add', isLoggedIn, function(req, res){
+    app.post('/equipment/add',/*isLoggedIn,*/ function(req, res){
 
         // Check for errors
         var errors = req.validationErrors(); //errors made avaible in server.js 'gloabal variables'
@@ -185,7 +185,7 @@ module.exports = function(app, passport) {
         });
     });
     //Pickup Edit
-    app.post('/pickup/edit', isLoggedIn, function(req, res) {
+    app.post('/pickup/edit',/*isLoggedIn,*/ function(req, res) {
         db1.pickup.find({ _id : ObjectId(req.body.editID) }).toArray(function(err, docs) {
             console.log(req.body.editID);
             res.render('editPickup', {
@@ -197,7 +197,7 @@ module.exports = function(app, passport) {
     });
 
     //Update pickup item
-    app.post('/pickup/update', isLoggedIn, function(req, res) {
+    app.post('/pickup/update',/*isLoggedIn,*/ function(req, res) {
 
         var newPickup = {
             location :req.body.pickup_location,
@@ -215,7 +215,7 @@ module.exports = function(app, passport) {
     });
 
     //Add new pickup item input page
-    app.get('/createPickup', isLoggedIn, function(req, res) {
+    app.get('/createPickup',/*isLoggedIn,*/ function(req, res) {
         db1.pickup.find(function(err, docs) {
             res.render('newPickup', {
                 title : 'New Item',
@@ -226,7 +226,7 @@ module.exports = function(app, passport) {
     });
 
     // Remove item
-    app.post('/pickup/delete', isLoggedIn, function(req, res) {
+    app.post('/pickup/delete',/*isLoggedIn,*/ function(req, res) {
             //remove from DB
             console.log('HI- ' +req.body.editID);
             var myquery = { _id : ObjectId(req.body.editID) };
@@ -239,7 +239,7 @@ module.exports = function(app, passport) {
     });
 
     // Add new pickup item
-    app.post('/pickup/add', isLoggedIn, function(req, res) {
+    app.post('/pickup/add', /*isLoggedIn,*/ function(req, res) {
         // Check for errors
         var errors = req.validationErrors();//errors made avaible in server.js 'gloabal variables'
         var user = req.user._id;
@@ -403,6 +403,10 @@ module.exports = function(app, passport) {
     // =====================================
     app.get('/logout', function(req, res) {
         req.logout();
+        res.redirect('/');
+    });
+
+    app.all('*', function(req, res) {
         res.redirect('/');
     });
 };
