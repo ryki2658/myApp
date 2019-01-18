@@ -1,5 +1,4 @@
-// Should probably be moved
-// Needed for mongoDB
+
 var mongojs = require('mongojs');
 var db = mongojs('workOrderApp', ['Jobs']);
 var db1 = mongojs('workOrderApp', ['pickup']);
@@ -19,21 +18,20 @@ module.exports = function(app, passport) {
     app.get('/', function(req, res) {
         res.render('overveiw.ejs', {
             title : 'EVO Maint'
-        });// load the index.ejs file
+        });
         
     });
 
     app.get('/landing', function(req, res) {
         res.render('index1.ejs', {
             title : 'EVO Maint'
-        });// load the index.ejs file
+        });// the index1.ejs is my resume
         
     });
 
     // =====================================
     // LOGIN ===============================
     // =====================================
-    // show the login form
     app.get('/login', function(req, res) {
 
         // render the page and pass in any flash data if it exists
@@ -50,7 +48,6 @@ module.exports = function(app, passport) {
     // =====================================
     // SIGNUP ==============================
     // =====================================
-    // show the signup form
     app.get('/signup', function(req, res) {
         // render the page and pass in any flash data if it exists
         res.render('signup.ejs', { message: req.flash('signupMessage') });
@@ -66,8 +63,8 @@ module.exports = function(app, passport) {
     // =====================================
     // PROFILE SECTION =====================
     // =====================================
-    // we will want this protected so you have to be logged in to visit
-    // we will use route middleware to verify this (the isLoggedIn function)
+    // you have to be logged in to visit
+    // use route middleware to verify this (the isLoggedIn function)
     app.get('/profile', isLoggedIn, function(req, res) {
         res.render('profile.ejs', {
             title : 'Profile',
@@ -79,28 +76,26 @@ module.exports = function(app, passport) {
     // EQUIPMENT SECTION ===================
     // =====================================
     //Equipment location
-    app.get('/equipLoc', /*isLoggedIn,*/function(req, res){
+    app.get('/equipLoc', function(req, res){
         db2.equipLoc.find(function(err, docs){
             res.render('equipLoc', {
                 title: 'Location',
                 equipment: docs,
-                user: req.user
             });
         });
     });
-
-    app.post('/equipLoc/edit', /*isLoggedIn,*/ function(req, res){
+    //Edit euipment location
+    app.post('/equipLoc/edit', function(req, res){
         db2.equipLoc.find({ _id : ObjectId(req.body.editID) }).toArray(function(err,docs){
             res.render("editEquipmentLoc", {
                 title : 'Edit',
                 equipLoc: docs,
-                user : req.user
             });
         });
     });
 
     // Update equipment
-    app.post('/equipLoc/update', /*isLoggedIn,*/ function(req, res){
+    app.post('/equipLoc/update', function(req, res){
         // Get formated date
         var date = fDate.formatDate();
 
@@ -114,15 +109,25 @@ module.exports = function(app, passport) {
         //Add newEquipLoc to MongoDB
         var myquery = { _id : ObjectId(req.body.editID) };
         var collection = db.collection('equipLoc');
-        //var newInfo = { $set : {job_notes : req.body.job_notes} };
         collection.update(myquery, { $set: newEquipLocDetails }, { safe:true}, function(err, result) {
             if (err) throw err;
         });
         res.redirect('/equipLoc');
     });
 
+    // Remove item
+    app.post('/equip/delete', function(req, res) {
+            //remove from DB
+            console.log('HI- ' +req.body.editID);
+            var myquery = { _id : ObjectId(req.body.editID) };
+            db2.equipLoc.remove(myquery, { safe:true}, function(err, result) {
+                if (err) throw err;
+            });
+            res.redirect('/equipLoc');
+    });
+
     // Add new equipment input page
-    app.get('/createEquipment', /*isLoggedIn,*/ function(req, res){
+    app.get('/createEquipment', function(req, res){
         db2.equipLoc.find(function (err, docs) {
             if (err) {
                 throw err;
@@ -130,17 +135,15 @@ module.exports = function(app, passport) {
             res.render('newEquip', {
                 title: 'New Equipment',
                 equipment: docs,
-                user: req.user
             });
         });        
     });
 
-    // Add new equipment
-    app.post('/equipment/add',/*isLoggedIn,*/ function(req, res){
+    // Add new equipment backend
+    app.post('/equipment/add', function(req, res){
 
         // Check for errors
         var errors = req.validationErrors(); //errors made avaible in server.js 'gloabal variables'
-        var user = req.user._id;
         var date = new Date();
         db2.equipLoc.find(function (err, docs) {
             if(errors){
@@ -148,7 +151,6 @@ module.exports = function(app, passport) {
                 res.render('index', {
                     title: 'Jobs',
                     equipment: docs,
-                    user: user,
                     errors: errors
                 });
             } else {
@@ -159,7 +161,6 @@ module.exports = function(app, passport) {
                     equipment_location: req.body.equipment_location,
                     equipment_details: req.body.equipment_details,
                     equipment_date: date, //Get the date on the fly
-                    user: user //Add user info to mongoDB for showing only data that this user has added in the table.ejs page
                 };
                 //Add to MongoDB
                 db2.equipLoc.insert(newEquip, function(err, result){
@@ -174,30 +175,28 @@ module.exports = function(app, passport) {
     // =====================================
     // PICKUP SECTION ======================
     // =====================================
-    //Pickup
-    app.get('/pickup', /*isLoggedIn,*/function(req, res){
+    //Pickup page
+    app.get('/pickup', function(req, res){
         db1.pickup.find(function(err, docs){
             res.render('pickup', {
                 title: 'Pickup',
                 items: docs,
-                //user: req.user
             });
         });
     });
     //Pickup Edit
-    app.post('/pickup/edit',/*isLoggedIn,*/ function(req, res) {
+    app.post('/pickup/edit', function(req, res) {
         db1.pickup.find({ _id : ObjectId(req.body.editID) }).toArray(function(err, docs) {
             console.log(req.body.editID);
             res.render('editPickup', {
                 title : 'Edit',
                 items : docs,
-                user : req.user
             });
         });
     });
 
     //Update pickup item
-    app.post('/pickup/update',/*isLoggedIn,*/ function(req, res) {
+    app.post('/pickup/update', function(req, res) {
 
         var newPickup = {
             location :req.body.pickup_location,
@@ -215,23 +214,20 @@ module.exports = function(app, passport) {
     });
 
     //Add new pickup item input page
-    app.get('/createPickup',/*isLoggedIn,*/ function(req, res) {
+    app.get('/createPickup', function(req, res) {
         db1.pickup.find(function(err, docs) {
             res.render('newPickup', {
                 title : 'New Item',
                 items : docs,
-                user : req.user
             });
         });
     });
 
     // Remove item
-    app.post('/pickup/delete',/*isLoggedIn,*/ function(req, res) {
+    app.post('/pickup/delete', function(req, res) {
             //remove from DB
             console.log('HI- ' +req.body.editID);
             var myquery = { _id : ObjectId(req.body.editID) };
-            //var collection = db.collection('pickup');
-            //db.pickup.remove({_id : ObjectId("5a0a116e669b710303f4d233")});
             db1.pickup.remove(myquery, { safe:true}, function(err, result) {
                 if (err) throw err;
             });
@@ -239,16 +235,14 @@ module.exports = function(app, passport) {
     });
 
     // Add new pickup item
-    app.post('/pickup/add', /*isLoggedIn,*/ function(req, res) {
+    app.post('/pickup/add', function(req, res) {
         // Check for errors
         var errors = req.validationErrors();//errors made avaible in server.js 'gloabal variables'
-        var user = req.user._id;
         db1.pickup.find(function(err, docs) {
             if(errors){
                 console.log('ERRORS');
                 res.render('index', {
                     title : 'oops',
-                    user : user,
                     errors : errors
                 });
             } else {
@@ -405,12 +399,18 @@ module.exports = function(app, passport) {
         req.logout();
         res.redirect('/');
     });
-
+    // =====================================
+    // EVERYTHING ELSE =====================
+    // =====================================
+    // if page is not found send to root page
     app.all('*', function(req, res) {
         res.redirect('/');
     });
 };
 
+// =====================================
+// CHECK LOGGED IN STATUS ==============
+// =====================================
 // route middleware to make sure a user is logged in
 function isLoggedIn(req, res, next) {
 
@@ -418,6 +418,6 @@ function isLoggedIn(req, res, next) {
     if (req.isAuthenticated())
         return next();
 
-    // if they aren't redirect them to the home page
+    // if they aren't redirect them to the login page
     res.redirect('/login');
 }
