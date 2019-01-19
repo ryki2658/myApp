@@ -320,6 +320,7 @@ module.exports = function(app, passport) {
         job_location: req.body.job_location,
         job_description: req.body.job_description,
         job_notes: req.body.job_notes,
+        job_status: req.body.job_status,
         job_date: fDate.formatDate(), //Get the date on the fly
         user: req.user._id //Add user info to mongoDB for showing only data that this user has added in the table.ejs page
         };
@@ -377,6 +378,7 @@ module.exports = function(app, passport) {
                     job_location: req.body.job_location,
                     job_description: req.body.job_description,
                     job_notes: req.body.job_notes,
+                    job_status: req.body.job_status,
                     job_date: fDate.formatDate(), //Get the date on the fly
                     user: user //Add user info to mongoDB for showing only data that this user has added in the table.ejs page
                 };

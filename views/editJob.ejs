@@ -85,6 +85,14 @@
                 <textarea class="form-control" name="job_notes" rows="10"><% job.forEach(function(job){ %><%= job.job_notes %><% }) %></textarea>
               </div>
             </div>
+
+            <!-- Completed yes/no -->
+            <div class="form-group">
+              <div class="col-md-12">
+                <input type="radio" name="job_status" value=inProgress <% job.forEach(function(job){ %><% job.job_status %><% if (job.job_status == 'inProgress') {%> checked="checked" <%} %><% }) %> /> In Progress <br>
+                <input type="radio" name="job_status" value=done <% job.forEach(function(job){ %><% job.job_status %><% if (job.job_status == 'done') {%> checked="checked" <%} %><% }) %> /> Done <br>
+              </div>  
+            </div>
     
             <!-- Form actions -->
             <div class="form-group">
