@@ -292,7 +292,7 @@ module.exports = function(app, passport) {
     // Filter based on selection
     app.post('/jobs/filter', function(req, res){
         if(req.body.sort_selection == 'All'){  //Reload the table with all the users jobs on empty filter sort_selection
-            db.Jobs.find({ 'user' : req.user._id }).toArray(function(err,docs){
+            db.Jobs.find({ 'user' : req.user._id, 'job_status' : req.body.job_status }).toArray(function(err,docs){
                 res.render('tables', {
                     title : 'Tables',
                     jobs: docs,
@@ -300,7 +300,7 @@ module.exports = function(app, passport) {
                 });
             });
         } else{ //Get users filter selection from page body
-            db.Jobs.find({ 'user' : req.user._id, 'job_location' : req.body.sort_selection }).toArray(function(err, docs){
+            db.Jobs.find({ 'user' : req.user._id, 'job_status' : req.body.job_status, 'job_location' : req.body.sort_selection }).toArray(function(err, docs){
                 res.render('tables', {
                     title: 'Tables',
                     jobs: docs,
@@ -308,15 +308,7 @@ module.exports = function(app, passport) {
                 });
             });
         }
-    
-        // Filter based on job status
-        db.Jobs.find({ 'user' : req.user._id, 'job_status' : req.body.job_status }).toArray(function(err,docs){
-            res.render('tables', {
-                title: 'Tables',
-                jobs: docs,
-                user: req.user
-            });
-        });
+
     });
 
     // Update Job
