@@ -308,7 +308,15 @@ module.exports = function(app, passport) {
                 });
             });
         }
-        
+    
+        // Filter based on job status
+        db.Jobs.find({ 'user' : req.user._id, 'job_status' : req.body.job_status }).toArray(function(err,docs){
+            res.render('tables', {
+                title: 'Tables',
+                jobs: docs,
+                user: req.user
+            });
+        });
     });
 
     // Update Job
