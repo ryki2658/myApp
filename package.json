@@ -3,12 +3,17 @@
   "version": "1.0.0",
   "description": "simple app",
   "main": "server.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/ryki2658/myApp.git"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
     "bcrypt-nodejs": "latest",
     "body-parser": "^1.18.3",
+    "bson": "^4.0.1",
     "connect-flash": "~0.1.1",
     "cookie-parser": "^1.4.3",
     "ejs": "^2.5.6",
