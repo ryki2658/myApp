@@ -1,8 +1,8 @@
 
 var mongojs = require('mongojs');
-var db = mongojs('workOrderApp', ['Jobs']);
-var db1 = mongojs('workOrderApp', ['pickup']);
-var db2 = mongojs('workOrderApp', ['equipLoc']);
+var db = mongojs('workOrderApp', ['Jobs'], { useNewUrlParser: true });
+var db1 = mongojs('workOrderApp', ['pickup'], { useNewUrlParser: true });
+var db2 = mongojs('workOrderApp', ['equipLoc'], { useNewUrlParser: true });
 var fDate = require('../config/formatDate.js');
 var ObjectId = require("mongodb").ObjectId;
 var favicon = require('express-favicon');
@@ -388,9 +388,9 @@ module.exports = function(app, passport) {
                         console.log(err);
                     }
                     res.redirect('/tables');
+                    console.log(newJob);
                 });
             }
-            console.log(newJob);
         });
     });
 
