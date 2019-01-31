@@ -3,16 +3,16 @@ module.exports = {
 	formatDate: function formatDate(date) {
 		date = new Date();
 	  	var monthNames = [
-	    	"Jan", "Feb", "Mar",
-	    	"Apr", "May", "Jun", "Jul",
-	    	"Aug", "Sep", "Oct",
-	    	"Nov", "Dec"
+	    	"JAN", "FEB", "MAR",
+	    	"APR", "MAY", "JUN", "JUL",
+	    	"AUG", "SEP", "OCT",
+	    	"NOV", "DEC"
 	  	];
 
 	  	var day = date.getDate();
 	  	var monthIndex = date.getMonth();
-	  	var year = date.getFullYear();
+		  var year = date.getFullYear();
 
-	  	return monthNames[monthIndex] + '/' + day + '/' + year;
+	  	return day + '-' + monthNames[monthIndex] + '-' + year;
 	}
 };

@@ -59,7 +59,7 @@ app.use(expressValidator({
 //app.use(session({ secret: 'ilovescotchscotchyscotchscotch' })); // session secret
 // Changed to remove deprecated waring for not having 'resave: true, saveUninitialized: true' 
 app.use(session({
-    secret: 'ilovescotchscotchyscotchscotch',
+    secret: 'ilovescotchscotchyscotchscotch31',
     //name: cookie_name,
     //store: sessionStore, // connect-mongo session store
     proxy: true,
