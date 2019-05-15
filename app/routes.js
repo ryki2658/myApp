@@ -3,10 +3,12 @@ var mongojs = require('mongojs');
 var db = mongojs('workOrderApp', ['Jobs'], { useNewUrlParser: true });
 var db1 = mongojs('workOrderApp', ['pickup'], { useNewUrlParser: true });
 var db2 = mongojs('workOrderApp', ['equipLoc'], { useNewUrlParser: true });
+var db4 = mongojs('workOrderApp', ['qr1'], { useNewUrlParser: true });
 var fDate = require('../config/formatDate.js');
 var ObjectId = require("mongodb").ObjectId;
 var favicon = require('express-favicon');
-
+urlStr = '';
+urlString = '';
 module.exports = function(app, passport) {
 
     //favicon
@@ -22,29 +24,34 @@ module.exports = function(app, passport) {
         
     });
 
-    app.get('/landing', function(req, res) {
-        res.render('index1.ejs', {
-            title : 'EVO Maint'
-        });// the index1.ejs is my resume
-        
+    app.get('/landing', isLoggedIn, function(req, res) {
+        res.render('Profile', {
+            title : 'EVO Maint',
+            user : req.user
+        }); 
     });
 
     // =====================================
     // LOGIN ===============================
     // =====================================
     app.get('/login', function(req, res) {
-
         // render the page and pass in any flash data if it exists
-        res.render('login.ejs', { message: req.flash('loginMessage') }); 
+        res.render('login.ejs', { 
+            message: req.flash('loginMessage'),
+            urlStr: req.body.urlStr //pass origanal request URL
+        });
     });
 
     // process the login form
-    app.post('/login', passport.authenticate('local-login', {
-        successRedirect : '/profile', // redirect to the secure profile section
-        failureRedirect : '/login', // redirect back to the signup page if there is an error
-        failureFlash : true // allow flash messages
-    }));
-
+    // traditional route handler, passed req/res
+    app.post('/login', function(req, res, next) {
+        // generate the authenticate method and pass the req/res
+        passport.authenticate('local-login', {
+            successRedirect : req.body.urlStr , // redirect to origanal requested page section
+            failureRedirect : '/login', // redirect back to the login page if there is an error
+            failureFlash : true // allow flash messages
+        })(req, res, next);
+    });
     // =====================================
     // SIGNUP ==============================
     // =====================================
@@ -52,14 +59,12 @@ module.exports = function(app, passport) {
         // render the page and pass in any flash data if it exists
         res.render('signup.ejs', { message: req.flash('signupMessage') });
     });
-
     // process the signup form
     app.post('/signup', passport.authenticate('local-signup', {
         successRedirect : '/profile', // redirect to the secure profile section
         failureRedirect : '/signup', // redirect back to the signup page if there is an error
         failureFlash : true // allow flash messages
     }));
-
     // =====================================
     // PROFILE SECTION =====================
     // =====================================
@@ -71,7 +76,6 @@ module.exports = function(app, passport) {
             user : req.user // get the user out of session and pass to template
         });
     });
-
     // =====================================
     // EQUIPMENT SECTION ===================
     // =====================================
@@ -393,7 +397,298 @@ module.exports = function(app, passport) {
             }
         });
     });
+    
+    // =====================================
+    // QR ==================================
+    //======================================
 
+    //QR home page
+    app.get('/qr', function(req, res){
+        db4.qr1.find(function(req, docs){
+            console.log(docs);
+            res.render('qr', {
+                title: 'QR',
+                qr: docs
+            });
+        });
+    });
+    // QR user specific home Page
+    app.get('/qr1', isLoggedIn, function(req, res){
+        db4.qr1.find({ user : req.user._id }).toArray(function(err, docs){ //Find all the records from the logged in user
+            res.render('qr', {
+                title: 'QR',
+                qr: docs,
+                user : req.user
+            });
+        });
+    });
+
+    //View QR details
+    app.post('/qr/view', isLoggedIn, function(req, res){
+        db4.qr1.find({ _id : ObjectId(req.body.editID) }).toArray(function(err,docs){
+            var details_string = docs[0].qr1_details;
+            var boilerRegex = new RegExp('Boiler', 'i');
+            var genRegEx = new RegExp('Generator', 'i');
+            if (boilerRegex.test(details_string)) {
+                res.render("boilerView", {
+                    title: 'Details',
+                    qr: docs,
+                    user: req.user
+                });
+            } else if (genRegEx.test(details_string)) {
+                res.render("genView", {
+                    title: 'Details',
+                    qr: docs,
+                    user: req.user
+                });
+            }
+        });
+    });
+    // Update QR database==========================
+     // Update record generator record
+     app.post('/qr/gen/input', isLoggedIn, function(req, res){
+        var newRecord = {
+            qr1_location: req.body.qr1_location,
+            qr1_details: req.body.qr1_details,
+            qr1_oil: req.body.qr1_oil,
+            qr1_oilQ: req.body.qr1_oilQ,
+            qr1_filter: req.body.qr1_filter,
+            qr1_fuelStatus: req.body.qr1_fuelStatus,
+            qr1_notes: req.body.qr1_notes
+        };
+        //Add record to MongoDB
+        var myquery = { _id : ObjectId(req.body.editID) };
+        var collection = db4.collection('qr1');
+        collection.update(myquery, { $set: newRecord }, { safe:true}, function(err, result) {
+            if (err) throw err;
+            console.log(myquery);
+            console.log(result);
+        });
+        res.redirect('/qr1');
+        console.log(newRecord);
+    });
+    // Add new record
+    //Boilers
+    app.post('/qr/boiler/add', isLoggedIn, function(req, res){
+        // Make sure fields are not empty
+        req.checkBody('qr1_preasure', 'Preasure is required ').notEmpty();
+        req.checkBody('qr1_temp', 'Temperature is required ').notEmpty();  
+        // Check for errors
+        var errors = req.validationErrors();
+        var user = req.user._id;
+        db4.qr1.find(function (err, docs) {
+            if(errors){
+                console.log('ERRORS');
+                res.render('qr', {
+                    title: 'qrAdmin',
+                    qr: docs,
+                    user: user,
+                    errors: errors
+            });
+            // If no errors create record
+            } else {
+                var newBoiler = {
+                    qr1_location: req.body.qr1_location,
+                    qr1_details: req.body.qr1_details,
+                    qr1_preasure: req.body.qr1_preasure,
+                    qr1_temp: req.body.qr1_temp,
+                    qr1_date: fDate.formatDate(),
+                    user: user
+                };
+                //Add record to MongoDB
+                db4.qr1.insert(newBoiler, function(err, result){
+                    if(err){
+                        console.log(err);
+                    }
+                    res.redirect('/qr1');
+                    console.log(newBoiler);
+                });
+            }
+        });
+    });
+
+    //Generators
+    app.post('/qr/generator/add', isLoggedIn, function(req, res){
+        // Make sure fields are not empty
+        req.checkBody('qr1_oil', 'oil is required ').notEmpty();
+        req.checkBody('qr1_filter', 'filter is required ').notEmpty();  
+        // Check for errors
+        var errors = req.validationErrors();
+        var user = req.user._id;
+        db4.qr1.find(function (err, docs) {
+            if(errors){
+                console.log('ERRORS');
+                res.render('qr', {
+                    title: 'qrAdmin',
+                    qr: docs,
+                    user: user,
+                    errors: errors
+            });
+            // If no errors create record
+            } else {
+                var newGen = {
+                    qr1_location: req.body.qr1_location,
+                    qr1_details: req.body.qr1_details,
+                    qr1_oil: req.body.qr1_oil,
+                    qr1_oilQ: req.body.qr1_oilQ,
+                    qr1_filter: req.body.qr1_filter,
+                    qr1_fuelFilter: req.body.qr1_fuelFilter,
+                    qr1_coolantStatus: req.body.qr1_coolantStatus,
+                    qr1_fuelStatus: req.body.qr1_fuelStatus,
+                    qr1_notes: req.body.qr1_notes,
+                    qr1_date: fDate.formatDate(),
+                    user: user
+                };
+                //Add record to MongoDB
+                db4.qr1.insert(newGen, function(err, result){
+                    if(err){
+                        console.log(err);
+                    }
+                    res.redirect('/qr1');
+                    console.log(newGen);
+                });
+            }
+        });
+    });
+
+    //AHU's
+    app.post('/qr/ahu/add', isLoggedIn, function(req, res){
+        // Make sure fields are not empty
+        req.checkBody('qr1_filterStatus', 'filter status is required ').notEmpty();  
+        // Check for errors
+        var errors = req.validationErrors();
+        var user = req.user._id;
+        db4.qr1.find(function (err, docs) {
+            if(errors){
+                console.log('ERRORS');
+                res.render('qr', {
+                    title: 'qrAdmin',
+                    qr: docs,
+                    user: user,
+                    errors: errors
+            });
+            // If no errors create record
+            } else {
+                var newAHU = {
+                    qr1_location: req.body.qr1_location,
+                    qr1_details: req.body.qr1_details,
+                    qr1_filterStatus: req.body.qr1_filterStatus,
+                    qr1_motorGreased: req.body.qr1_motorGreased,
+                    qr1_notes: req.body.qr1_notes,
+                    qr1_date: fDate.formatDate(),
+                    user: user
+                };
+                //Add record to MongoDB
+                db4.qr1.insert(newAHU, function(err, result){
+                    if(err){
+                        console.log(err);
+                    }
+                    res.redirect('/qr1');
+                    console.log(newAHU);
+                });
+            }
+        });
+    });
+    
+    //CLC
+    app.get('/qr/clc/boiler1', isLoggedIn, function(req, res){
+        var date = fDate.formatDate();
+        var qr1Update = {
+            qr1_location: 'CLC',
+            qr1_details: 'Boiler1',
+            qr1_date: date
+        };
+        res.render('boiler', {
+            title: 'CLC Boiler1',
+            user: req.user,
+            info: qr1Update
+        });
+    });
+    
+    app.get('/qr/clc/boiler2', isLoggedIn, function(req, res){
+        var date = fDate.formatDate();
+        var qr1Update = {
+            qr1_location: 'CLC',
+            qr1_details: 'Boiler2',
+            qr1_date: date
+        };
+        res.render('boiler', {
+            title: 'CLC Boiler2',
+            user: req.user,
+            info: qr1Update
+        });
+    });
+    
+    app.get('/qr/clc/generator', isLoggedIn, function(req, res){
+        var date = fDate.formatDate();
+        var qr1Update = {
+            qr1_location: 'CLC',
+            qr1_details: 'Generator',
+            qr1_date: date
+        };
+        res.render('generator', {
+            title: 'CLC Generator',
+            user: req.user,
+            info: qr1Update
+        });
+    });
+
+    app.get('/qr/clc/ahu1', isLoggedIn, function(req, res){
+        var date = fDate.formatDate();
+        var qr1Update = {
+            qr1_location: 'CLC',
+            qr1_details: 'AHU1',
+            qr1_date: date
+        };
+        res.render('ahu', {
+            title: 'CLC AHU1',
+            user: req.user,
+            info: qr1Update
+        });
+    });
+     
+    //CJjrHS
+    app.get('/qr/cjhs/boiler1', isLoggedIn, function(req, res){
+        var date = fDate.formatDate();
+        var qr1Update = {
+            qr1_location: 'CJjrHS',
+            qr1_details: 'Boiler1',
+            qr1_date: date
+        };
+        res.render('boiler', {
+            title: 'CLC Boiler1',
+            user: req.user,
+            info: qr1Update
+        });
+    });
+
+    app.get('/qr/cjhs/boiler2', isLoggedIn, function(req, res){
+        var date = fDate.formatDate();
+        var qr1Update = {
+            qr1_location: 'CJjrHS',
+            qr1_details: 'Boiler2',
+            qr1_date: date
+        };
+        res.render('boiler', {
+            title: 'CLC Boiler2',
+            user: req.user,
+            info: qr1Update
+        });
+    });
+
+    app.get('/qr/cjhs/Generator', isLoggedIn, function(req, res){
+        var date = fDate.formatDate();
+        var qr1Update = {
+            qr1_location: 'CJjrHS',
+            qr1_details: 'Generator',
+            qr1_date: date
+        };
+        res.render('generator', {
+            title: 'CJjrHS Generator',
+            user: req.user,
+            info: qr1Update
+        });
+    });
     // =====================================
     // LOGOUT ==============================
     // =====================================
@@ -415,11 +710,12 @@ module.exports = function(app, passport) {
 // =====================================
 // route middleware to make sure a user is logged in
 function isLoggedIn(req, res, next) {
-
-    // if user is authenticated in the session, carry on 
-    if (req.isAuthenticated())
+    if (!req.isAuthenticated()) {
+        res.render('login.ejs', { 
+            message: req.flash('loginMessage'),
+            urlStr: req.route.path
+        }); 
+    } else {
         return next();
-
-    // if they aren't redirect them to the login page
-    res.redirect('/login');
+    }
 }

@@ -1,0 +1,65 @@
+<% include partials/header_1 %>
+
+<header class="w3-container">
+    <h5 class="text-center" style="padding-top:20px;"><b><i class="fa fa-edit"></i> QR</b></h5>
+</header>
+<br>
+  <div class="col-md-12">
+    <div class="row">
+      <div class="well well-sm">
+        <legend class="text-center">QR Details</legend>
+
+        <form class="form-horizontal" action="/qr/.." method="POST">
+          <fieldset>
+            <!-- _id for getting the right entry in the DB-->
+            <div style="display: none;" class="form-group">
+              <input class="form-control" name="editID" type="text" value=<% qr.forEach(function(e){ %><%=e._id %><% }) %>>
+            </div>
+            
+            <!-- Location input-->
+            <div class="form-group">
+              <label class="col-md-4">Location</label>
+              <div class="col-md-12">
+                <input class="form-control" name="qr1_location" type="text" value="<% qr.forEach(function(e){ %><%=e.qr1_location %><% }) %>" readonly>
+              </div>
+            </div>
+
+            <!-- Description input-->
+            <div class="form-group">
+              <label class="col-md-4">Details</label>
+              <div class="col-md-12">
+                <input class="form-control" name="qr1_details" type="text" value="<% qr.forEach(function(e){ %><%=e.qr1_details %><% }) %>" readonly>
+              </div>
+            </div>
+
+            <!-- Preasure input-->
+            <div class="form-group">
+              <label class="col-md-4">Preasure</label>
+              <div class="col-md-12">
+                <input class="form-control" name="qr1_preasure" type="text" value="<% qr.forEach(function(e){ %><%=e.qr1_preasure %><% }) %>" readonly>
+              </div>
+            </div>
+    
+            <!-- Temperature input -->
+            <div class="form-group">
+              <label class="col-md-4">Temperature</label>
+              <div class="col-md-12">
+                <input class="form-control" name="qr1_temp" type="text" value="<% qr.forEach(function(e){ %><%=e.qr1_temp %><% }) %>" readonly>
+              </div>
+            </div>
+    
+            <!-- Form actions -->
+            <div class="form-group">
+              <div class="col-md-12 text-right">
+                <!-- <button type="submit" value="execute">Save</button> -->
+                <!-- <button type="submit" formaction="/qr/delete"><i class="fa fa-trash"></i>Delete</button> -->
+                <input action="action" onclick="window.history.go(-1); return false;" type="button" value="Back" />
+              </div>
+            </div>
+          </fieldset>
+        </form>
+      </div>
+    </div>
+  </div>
+<% include partials/footer %>
+  

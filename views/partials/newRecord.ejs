@@ -1,0 +1,57 @@
+<% include partials/header_1 %>
+
+  <div class="col-md-12" style="padding-top: 10px">
+    <div class="row">
+      <div class="well well-sm">
+        <legend class="text-center"> <i class="fa fa-plus"></i>Add New Boiler</legend>
+
+        <form class="form-horizontal" action="/qr/boiler/add" method="POST">
+          <fieldset>
+            
+            <!-- Location body -->
+            <div class="form-group">
+              <label class="col-md-4">Location</label>
+              <div class="col-md-12">
+                <textarea class="form-control" name="qr1_location" readonly><%= info.qr1_location %></textarea>
+              </div>
+            </div>
+
+            <!-- Details body -->
+            <div class="form-group">
+              <label class="col-md-4">Details</label>
+              <div class="col-md-12">
+                <textarea class="form-control" name="qr1_details" readonly><%= info.qr1_details %></textarea>
+              </div>
+            </div>
+
+            <!-- Preasure body -->
+            <div class="form-group">
+              <label class="col-md-4">Preasure</label>
+              <div class="col-md-12">
+                <textarea class="form-control" name="qr1_preasure" placeholder="Please describe your project..."></textarea>
+              </div>
+            </div>
+
+            <!-- Temperatrure body -->
+            <div class="form-group">
+              <label class="col-md-4">Temperatrure</label>
+              <div class="col-md-12">
+                <textarea class="form-control" name="qr1_temp" placeholder="Project notes..." rows="10"></textarea>
+              </div>
+            </div>
+          
+            <!-- Form actions -->
+            <div class="form-group">
+              <div class="col-md-12 text-right">
+                <button type="submit" value="execute">Submit</button>
+              </div>
+            </div>
+          </fieldset>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% include partials/footer %>
+  

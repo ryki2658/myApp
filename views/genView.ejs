@@ -1,0 +1,97 @@
+<% include partials/header_1 %>
+
+<header class="w3-container">
+    <h5 class="text-center" style="padding-top:20px;"><b><i class="fa fa-edit"></i> QR</b></h5>
+</header>
+<br>
+  <div class="col-md-12">
+    <div class="row">
+      <div class="well well-sm">
+        <legend class="text-center">QR Details</legend>
+
+        <form class="form-horizontal" action="/qr/gen/input" method="POST">
+          <fieldset>
+            <!-- _id for getting the right entry in the DB-->
+            <div style="display: none;" class="form-group">
+              <input class="form-control" name="editID" type="text" value=<% qr.forEach(function(e){ %><%=e._id %><% }) %>>
+            </div>
+            
+            <!-- Location input-->
+            <div class="form-group">
+              <label class="col-md-4">Location</label>
+              <div class="col-md-12">
+                <input class="form-control" name="qr1_location" type="text" value="<% qr.forEach(function(e){ %><%=e.qr1_location %><% }) %>" readonly>
+              </div>
+            </div>
+
+            <!-- Description input-->
+            <div class="form-group">
+              <label class="col-md-4">Details</label>
+              <div class="col-md-12">
+                <input class="form-control" name="qr1_details" type="text" value="<% qr.forEach(function(e){ %><%=e.qr1_details %><% }) %>" readonly>
+              </div>
+            </div>
+
+            <!-- Oil Type input-->
+            <div class="form-group">
+              <div class="col-md-6">
+                <label for="qr1_oil">Oil Type</label>
+                <input class="form-control" name="qr1_oil" type="text" value="<% qr.forEach(function(e){ %><%=e.qr1_oil %><% }) %>" readonly>
+              </div>
+              <div class="col-md-6">
+                <label for="qr1_oilQ">Quantity</label>
+                <input class="form-control" name="qr1_oilQ" type="text" value="<% qr.forEach(function(e){ %><%=e.qr1_oilQ %><% }) %>" readonly>
+              </div>
+            </div>
+    
+            <!-- Filter input -->
+            <div class="form-group">
+              <div class="col-md-6">
+                <label for="qr1_filter">Oil Filter</label>
+                <input class="form-control" name="qr1_filter" type="text" value="<% qr.forEach(function(e){ %><%=e.qr1_filter %><% }) %>" readonly>
+              </div>
+              <div class="col-md-6">
+                <label for="qr1_fuelFilter">Fuel Filter</label>
+                <input class="form-control" name="qr1_fuelFilter" type="text" value="<% qr.forEach(function(e){ %><%=e.qr1_fuelFilter %><% }) %>" readonly>
+              </div>
+            </div>
+
+            <!-- Fuel/Coolant OK/LOW -->
+            <div class="form-group">
+              <div class="col-md-12">            
+                <div class="col-md-6">
+                  <label for="qr1_fuelStatus">Fuel Status</label>
+                  <input type="radio" name="qr1_fuelStatus" value=FULL <% qr.forEach(function(e){ %><%e.qr1_fuelStatus %><% if (e.qr1_fuelStatus == 'FULL') {%> checked="checked" <%} %><% }) %> /> FULL <br>                 
+                  <input type="radio" name="qr1_fuelStatus" value=OK <% qr.forEach(function(e){ %><%e.qr1_fuelStatus %><% if (e.qr1_fuelStatus == 'OK') {%> checked="checked" <%} %><% }) %> /> OK <br>
+                  <input type="radio" name="qr1_fuelStatus" value=LOW <% qr.forEach(function(e){ %><%e.qr1_fuelStatus %><% if (e.qr1_fuelStatus == 'LOW') {%> checked="checked" <%} %><% }) %> /> LOW <br>
+                </div>
+                <div class="col-md-6 ">
+                  <label for="qr1_coolantStatus">Coolant Status</label>
+                  <input type="radio" name="qr1_coolantStatus" value=FULL <% qr.forEach(function(e){ %><%e.qr1_coolantStatus %><% if (e.qr1_coolantStatus == 'FULL') {%> checked="checked" <%} %><% }) %> /> FULL <br>                 
+                  <input type="radio" name="qr1_coolantStatus" value=LOW <% qr.forEach(function(e){ %><%e.qr1_coolantStatus %><% if (e.qr1_coolantStatus == 'LOW') {%> checked="checked" <%} %><% }) %> /> LOW <br>
+                </div>  
+              </div>
+            </div>
+
+            <!-- Notes -->
+          <div class="form-group">
+            <label class="col-md-4">Alarms/Repairs/Notes</label>
+            <div class="col-md-12">
+              <textarea class="form-control" name="qr1_notes" rows="10"><% qr.forEach(function(e){ %><%=e.qr1_notes %><% }) %></textarea>
+            </div>
+          </div>
+    
+            <!-- Form actions -->
+            <div class="form-group">
+              <div class="col-md-12 text-right">
+                <button type="submit" value="execute">Save</button>
+                <input action="action" onclick="window.history.go(-1); return false;" type="button" value="Back" />
+              </div>
+            </div>
+          </fieldset>
+        </form>
+      </div>
+    </div>
+  </div>
+<% include partials/footer %>
+  
