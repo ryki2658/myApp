@@ -429,6 +429,7 @@ module.exports = function(app, passport) {
             var details_string = docs[0].qr1_details;
             var boilerRegex = new RegExp('Boiler', 'i');
             var genRegEx = new RegExp('Generator', 'i');
+            var ahuRegEx = new RegExp('AHU', 'i');
             if (boilerRegex.test(details_string)) {
                 res.render("boilerView", {
                     title: 'Details',
@@ -441,7 +442,13 @@ module.exports = function(app, passport) {
                     qr: docs,
                     user: req.user
                 });
-            }
+            } else if (ahuRegEx.test(details_string)) {
+                res.render("ahuView", {
+                    title: 'Details',
+                    qr: docs,
+                    user: req.user
+                });
+            } 
         });
     });
     // Update QR database==========================
@@ -467,6 +474,32 @@ module.exports = function(app, passport) {
         res.redirect('/qr1');
         console.log(newRecord);
     });
+
+    // Update record AHU record
+    app.post('/qr/ahu/input', isLoggedIn, function(req, res){
+        var newRecord = {
+            qr1_location: req.body.qr1_location,
+            qr1_details: req.body.qr1_details,
+            qr1_beltSize: req.body.qr1_beltSize,
+            qr1_beltStatus: req.body.qr1_beltStatus,
+            qr1_filterSize: req.body.qr1_filterSize,
+            qr1_filterQ:req.body.qr1_filterQ,
+            qr1_filterStatus: req.body.qr1_filterStatus,
+            qr1_motorGreased: req.body.qr1_motorGreased,
+            qr1_notes: req.body.qr1_notes,
+        };
+        //Add record to MongoDB
+        var myquery = { _id : ObjectId(req.body.editID) };
+        var collection = db4.collection('qr1');
+        collection.update(myquery, { $set: newRecord }, { safe:true}, function(err, result) {
+            if (err) throw err;
+            console.log(myquery);
+            console.log(result);
+        });
+        res.redirect('/qr1');
+        console.log(newRecord);
+    });
+
     // Add new record
     //Boilers
     app.post('/qr/boiler/add', isLoggedIn, function(req, res){
@@ -572,6 +605,10 @@ module.exports = function(app, passport) {
                 var newAHU = {
                     qr1_location: req.body.qr1_location,
                     qr1_details: req.body.qr1_details,
+                    qr1_beltSize: req.body.qr1_beltSize,
+                    qr1_beltStatus: req.body.qr1_beltStatus,
+                    qr1_filterSize: req.body.qr1_filterSize,
+                    qr1_filterQ:req.body.qr1_filterQ,
                     qr1_filterStatus: req.body.qr1_filterStatus,
                     qr1_motorGreased: req.body.qr1_motorGreased,
                     qr1_notes: req.body.qr1_notes,
