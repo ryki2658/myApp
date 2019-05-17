@@ -504,8 +504,8 @@ module.exports = function(app, passport) {
     //Boilers
     app.post('/qr/boiler/add', isLoggedIn, function(req, res){
         // Make sure fields are not empty
-        req.checkBody('qr1_preasure', 'Preasure is required ').notEmpty();
-        req.checkBody('qr1_temp', 'Temperature is required ').notEmpty();  
+        //req.checkBody('qr1_preasure', 'Preasure is required ').notEmpty();
+        //req.checkBody('qr1_temp', 'Temperature is required ').notEmpty();  
         // Check for errors
         var errors = req.validationErrors();
         var user = req.user._id;
@@ -543,8 +543,8 @@ module.exports = function(app, passport) {
     //Generators
     app.post('/qr/generator/add', isLoggedIn, function(req, res){
         // Make sure fields are not empty
-        req.checkBody('qr1_oil', 'oil is required ').notEmpty();
-        req.checkBody('qr1_filter', 'filter is required ').notEmpty();  
+        //req.checkBody('qr1_oil', 'oil is required ').notEmpty();
+        //req.checkBody('qr1_filter', 'filter is required ').notEmpty();  
         // Check for errors
         var errors = req.validationErrors();
         var user = req.user._id;
@@ -587,7 +587,7 @@ module.exports = function(app, passport) {
     //AHU's
     app.post('/qr/ahu/add', isLoggedIn, function(req, res){
         // Make sure fields are not empty
-        req.checkBody('qr1_filterStatus', 'filter status is required ').notEmpty();  
+        //req.checkBody('qr1_filterStatus', 'filter status is required ').notEmpty();  
         // Check for errors
         var errors = req.validationErrors();
         var user = req.user._id;
