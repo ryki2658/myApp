@@ -452,8 +452,36 @@ module.exports = function(app, passport) {
         });
     });
     // Update QR database==========================
-     // Update record generator record
-     app.post('/qr/gen/input', isLoggedIn, function(req, res){
+
+    //Update Boiler record
+    app.post('/qr/boiler/input', isLoggedIn, function(req, res){
+        var newRecord = {
+            qr1_location: req.body.qr1_location,
+            qr1_details: req.body.qr1_details,
+            qr1_B1preasure: req.body.qr1_B1preasure,
+            qr1_B1temp: req.body.qr1_B1temp,
+            qr1_B2preasure: req.body.qr1_B2preasure,
+            qr1_B2temp: req.body.qr1_B2temp,
+            qr1_glycolStatus: req.body.qr1_glycolStatus,
+            qr1_brineTankStatus: req.body.qr1_brineTankStatus,
+            qr1_saltAdded: req.body.qr1_saltAdded,
+            qr1_pumpGreased: req.body.qr1_pumpGreased,
+            qr1_compressorOil: req.body.qr1_compressorOil,
+            qr1_compPreasure: req.body.qr1_compPreasure,
+            qr1_notes: req.body.qr1_notes
+        };
+        //Add to database
+        var myquery = {_id : ObjectId(req.body.editID) };
+        var collection = db4.collection('qr1');
+        collection.update(myquery, { $set: newRecord }, {safe : true}, function(err, result) {
+            if (err) throw err;
+        });
+        res.redirect('/qr1');
+        console.log(newRecord);
+    });
+
+    // Update generator record
+    app.post('/qr/gen/input', isLoggedIn, function(req, res){
         var newRecord = {
             qr1_location: req.body.qr1_location,
             qr1_details: req.body.qr1_details,
@@ -468,8 +496,6 @@ module.exports = function(app, passport) {
         var collection = db4.collection('qr1');
         collection.update(myquery, { $set: newRecord }, { safe:true}, function(err, result) {
             if (err) throw err;
-            console.log(myquery);
-            console.log(result);
         });
         res.redirect('/qr1');
         console.log(newRecord);
@@ -523,8 +549,18 @@ module.exports = function(app, passport) {
                 var newBoiler = {
                     qr1_location: req.body.qr1_location,
                     qr1_details: req.body.qr1_details,
-                    qr1_preasure: req.body.qr1_preasure,
-                    qr1_temp: req.body.qr1_temp,
+                    qr1_B1preasure: req.body.qr1_B1preasure,
+                    qr1_B1temp: req.body.qr1_B1temp,
+                    qr1_B2preasure: req.body.qr1_B2preasure,
+                    qr1_B2temp: req.body.qr1_B2temp,
+                    qr1_glycolStatus: req.body.qr1_glycolStatus,
+                    qr1_brineTankStatus: req.body.qr1_brineTankStatus,
+                    qr1_saltAdded: req.body.qr1_saltAdded,
+                    qr1_pumpGreased: req.body.qr1_pumpGreased,
+                    qr1_pumpPreasure: req.body.qr1_pumpPreasure,
+                    qr1_compressorOil: req.body.qr1_compressorOil,
+                    qr1_compPreasure: req.body.qr1_compPreasure,
+                    qr1_notes: req.body.qr1_notes,
                     qr1_date: fDate.formatDate(),
                     user: user
                 };
@@ -551,7 +587,7 @@ module.exports = function(app, passport) {
         db4.qr1.find(function (err, docs) {
             if(errors){
                 console.log('ERRORS');
-                res.render('qr', {
+                res.render('qr1', {
                     title: 'qrAdmin',
                     qr: docs,
                     user: user,
@@ -594,7 +630,7 @@ module.exports = function(app, passport) {
         db4.qr1.find(function (err, docs) {
             if(errors){
                 console.log('ERRORS');
-                res.render('qr', {
+                res.render('qr1', {
                     title: 'qrAdmin',
                     qr: docs,
                     user: user,
@@ -632,11 +668,11 @@ module.exports = function(app, passport) {
         var date = fDate.formatDate();
         var qr1Update = {
             qr1_location: 'CLC',
-            qr1_details: 'Boiler1',
+            qr1_details: 'BoilerRoom',
             qr1_date: date
         };
         res.render('boiler', {
-            title: 'CLC Boiler1',
+            title: 'CLC Boiler Room',
             user: req.user,
             info: qr1Update
         });
@@ -646,7 +682,7 @@ module.exports = function(app, passport) {
         var date = fDate.formatDate();
         var qr1Update = {
             qr1_location: 'CLC',
-            qr1_details: 'Boiler2',
+            qr1_details: 'BoilerRoom',
             qr1_date: date
         };
         res.render('boiler', {

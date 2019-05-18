@@ -9,7 +9,7 @@
       <div class="well well-sm">
         <legend class="text-center">QR Details</legend>
 
-        <form class="form-horizontal" action="/qr/.." method="POST">
+        <form class="form-horizontal" action="/qr/boiler/input" method="POST">
           <fieldset>
             <!-- _id for getting the right entry in the DB-->
             <div style="display: none;" class="form-group">
@@ -26,33 +26,99 @@
 
             <!-- Description input-->
             <div class="form-group">
-              <label class="col-md-4">Details</label>
+              <label class="col-md-4">Area</label>
               <div class="col-md-12">
                 <input class="form-control" name="qr1_details" type="text" value="<% qr.forEach(function(e){ %><%=e.qr1_details %><% }) %>" readonly>
               </div>
             </div>
 
-            <!-- Preasure input-->
+            <!-- Boiler 1 input-->
             <div class="form-group">
-              <label class="col-md-4">Preasure</label>
-              <div class="col-md-12">
-                <input class="form-control" name="qr1_preasure" type="text" value="<% qr.forEach(function(e){ %><%=e.qr1_preasure %><% }) %>" readonly>
+              <div class="col-md-6">
+                <label for="qr1_B1preasure">B1 Preasure</label>
+                <input class="form-control" name="qr1_B1preasure" type="text" value="<% qr.forEach(function(e){ %><%=e.qr1_B1preasure %><% }) %>" readonly>
+              </div>
+              <div class="col-md-6">
+                <label for="qr1_B1temp">B1 Temperature</label>
+                <input class="form-control" name="qr1_B1temp" type="text" value="<% qr.forEach(function(e){ %><%=e.qr1_B1temp %><% }) %>" readonly>
               </div>
             </div>
     
-            <!-- Temperature input -->
+            <!-- Boiler 2 input-->
             <div class="form-group">
-              <label class="col-md-4">Temperature</label>
+              <div class="col-md-6">
+                <label for="qr1_B2preasure">B2 Preasure</label>
+                <input class="form-control" name="qr1_B2preasure" type="text" value="<% qr.forEach(function(e){ %><%=e.qr1_B2preasure %><% }) %>" readonly>
+              </div>
+              <div class="col-md-6">
+                <label for="qr1_B2temp">B2 Temperature</label>
+                <input class="form-control" name="qr1_B2temp" type="text" value="<% qr.forEach(function(e){ %><%=e.qr1_B2temp %><% }) %>" readonly>
+              </div>
+            </div>
+
+            <!-- Glycol Tank -->
+          <div class="form-group">
+              <div class="col-md-6">
+                <label for="qr1_glycolStatus">Glycol Tank Fill</label>
+                <input type="radio" name="qr1_glycolStatus" value=100 100 <% qr.forEach(function(e){ %><%e.qr1_glycolStatus %><% if (e.qr1_glycolStatus == '100') {%> checked="checked" <%} %><% }) %> />100% <br>                 
+                <input type="radio" name="qr1_glycolStatus" value=75 75 <% qr.forEach(function(e){ %><%e.qr1_glycolStatus %><% if (e.qr1_glycolStatus == '75') {%> checked="checked" <%} %><% }) %> />75% <br>
+                <input type="radio" name="qr1_glycolStatus" value=50 50 <% qr.forEach(function(e){ %><%e.qr1_glycolStatus %><% if (e.qr1_glycolStatus == '50') {%> checked="checked" <%} %><% }) %> />50% <br>
+                <input type="radio" name="qr1_glycolStatus" value=25 25 <% qr.forEach(function(e){ %><%e.qr1_glycolStatus %><% if (e.qr1_glycolStatus == '25') {%> checked="checked" <%} %><% }) %> />25% <br>
+              </div>
+            </div>
+  
+            <!-- Brine Tank -->
+            <div class="form-group">
+                <div class="col-md-6">
+                <label for="qr1_brineTankStatus">Brine Tank Fill</label>
+                <input type="radio" name="qr1_brineTankStatus" value=FULL FULL <% qr.forEach(function(e){ %><%e.qr1_brineTankStatus %><% if (e.qr1_brineTankStatus == 'FULL') {%> checked="checked" <%} %><% }) %> />FULL <br>                 
+                <input type="radio" name="qr1_brineTankStatus" value=OK OK <% qr.forEach(function(e){ %><%e.qr1_brineTankStatus %><% if (e.qr1_brineTankStatus == 'OK') {%> checked="checked" <%} %><% }) %> />OK <br>
+                <input type="radio" name="qr1_brineTankStatus" value=LOW LOW <% qr.forEach(function(e){ %><%e.qr1_brineTankStatus %><% if (e.qr1_brineTankStatus == 'LOW') {%> checked="checked" <%} %><% }) %> />LOW <br>
+              </div>
+              <div class="col-md-6">
+                <label for="qr1_saltAdded">Salt Added to Brine Tank</label>
+                <input class="form-control" name="qr1_saltAdded" type="number" min="1" max="100" value="<% qr.forEach(function(e){ %><%=e.qr1_saltAdded %><% }) %>" readonly>
+              </div> 
+            </div>
+  
+            <!-- Pumps -->
+            <div class="form-group">
+              <div class="col-md-6">
+                <label for="qr1_pumpGreased">Circulation Pumps Greased</label>
+                <input type="radio" name="qr1_pumpGreased" value=YES YES <% qr.forEach(function(e){ %><%e.qr1_pumpGreased %><% if (e.qr1_pumpGreased == 'YES') {%> checked="checked" <%} %><% }) %> />YES <br>                 
+                <input type="radio" name="qr1_pumpGreased" value=NO NO <% qr.forEach(function(e){ %><%e.qr1_pumpGreased %><% if (e.qr1_pumpGreased == 'NO') {%> checked="checked" <%} %><% }) %> />NO <br>
+              </div>
+              <div class="col-md-6">
+                <label for="qr1_pumpPreasure">Pump Preasure</label>
+                <input class="form-control" name="qr1_pumpPreasure" type="number" value="<% qr.forEach(function(e){ %><%=e.qr1_pumpPreasure %><% }) %>" readonly>
+              </div>  
+            </div>
+  
+            <!-- Air Compressor -->
+            <div class="form-group">
+              <div class="col-md-6 ">
+                <label for="qr1_compressorOil">Air Compressor Oil</label>
+                <input type="radio" name="qr1_compressorOil" value=OK OK <% qr.forEach(function(e){ %><%e.qr1_compressorOil %><% if (e.qr1_compressorOil == 'OK') {%> checked="checked" <%} %><% }) %> />OK <br>                 
+                <input type="radio" name="qr1_compressorOil" value=LOW LOW <% qr.forEach(function(e){ %><%e.qr1_compressorOil %><% if (e.qr1_compressorOil == 'LOW') {%> checked="checked" <%} %><% }) %> />LOW <br>
+              </div>
+              <div class="col-md-6">
+                <label for="qr1_compPreasure">Compressor Preasure to building</label>
+                <input class="form-control" name="qr1_compPreasure" type="number" value="<% qr.forEach(function(e){ %><%=e.qr1_compPreasure %><% }) %>" readonly>
+              </div>  
+            </div>
+  
+            <!-- Notes -->
+            <div class="form-group">
+              <label class="col-md-4">Notes/Assessment of Boiler Room</label>
               <div class="col-md-12">
-                <input class="form-control" name="qr1_temp" type="text" value="<% qr.forEach(function(e){ %><%=e.qr1_temp %><% }) %>" readonly>
+                <textarea class="form-control" name="qr1_notes" rows="10"><% qr.forEach(function(e){ %><%=e.qr1_notes %><% }) %></textarea>
               </div>
             </div>
     
             <!-- Form actions -->
             <div class="form-group">
               <div class="col-md-12 text-right">
-                <!-- <button type="submit" value="execute">Save</button> -->
-                <!-- <button type="submit" formaction="/qr/delete"><i class="fa fa-trash"></i>Delete</button> -->
+                <button type="submit" value="execute">Save</button>
                 <input action="action" onclick="window.history.go(-1); return false;" type="button" value="Back" />
               </div>
             </div>

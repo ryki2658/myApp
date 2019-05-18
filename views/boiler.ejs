@@ -1,57 +1,120 @@
 <% include partials/header_1 %>
 
-  <div class="col-md-12" style="padding-top: 10px">
-    <div class="row">
-      <div class="well well-sm">
-        <legend class="text-center"> <i class="fa fa-plus"></i>Add New Boiler</legend>
+<div class="col-md-12" style="padding-top: 10px">
+  <div class="row">
+    <div class="well well-sm">
+      <legend class="text-center"> <i class="fa fa-plus"></i>New Boiler Log</legend>
+      <form class="form-horizontal" action="/qr/boiler/add" method="POST">
+        <fieldset>
 
-        <form class="form-horizontal" action="/qr/boiler/add" method="POST">
-          <fieldset>
-            
-            <!-- Location body -->
-            <div class="form-group">
-              <label class="col-md-4">Location</label>
-              <div class="col-md-12">
-                <textarea class="form-control" name="qr1_location" readonly><%= info.qr1_location %></textarea>
-              </div>
+          <!-- Location body -->
+          <div class="form-group">
+            <label class="col-md-4">Building</label>
+            <div class="col-md-12">
+              <textarea class="form-control" name="qr1_location" readonly><%=info.qr1_location %></textarea>
             </div>
+          </div>
 
-            <!-- Details body -->
-            <div class="form-group">
-              <label class="col-md-4">Details</label>
-              <div class="col-md-12">
-                <textarea class="form-control" name="qr1_details" readonly><%= info.qr1_details %></textarea>
-              </div>
+          <!-- Details body -->
+          <div class="form-group">
+            <label class="col-md-4">Area</label>
+            <div class="col-md-12">
+              <textarea class="form-control" name="qr1_details" readonly><%=info.qr1_details %></textarea>
             </div>
+          </div>
 
-            <!-- Preasure body -->
-            <div class="form-group">
-              <label class="col-md-4">Preasure</label>
-              <div class="col-md-12">
-                <textarea class="form-control" name="qr1_preasure" placeholder="Boiler Preasure gauge reading..."></textarea>
-              </div>
+          <!-- Boiler 1 body -->
+          <div class="form-group">
+            <div class="col-md-6">
+              <label for="qr1_B1preasure">Boiler 1 Preasure</label>
+              <textarea class="form-control" name="qr1_B1preasure" placeholder="Boiler 1 Preasure gauge reading..."></textarea>
             </div>
+            <div class="col-md-6">
+              <label for="qr1_B1Temp">Boiler 1 Temperatrure</label>
+              <textarea class="form-control" name="qr1_B1temp" placeholder="Boiler 1 Temerature gague reading..."></textarea>
+            </div>
+          </div>
 
-            <!-- Temperatrure body -->
-            <div class="form-group">
-              <label class="col-md-4">Temperatrure</label>
-              <div class="col-md-12">
-                <textarea class="form-control" name="qr1_temp" placeholder="Boiler Temperature gauge reading..."></textarea>
-              </div>
+          <!-- Boiler 2 body -->
+          <div class="form-group">
+            <div class="col-md-6">
+              <label for="qr1_B2preasure">Boiler 2 Preasure</label>
+              <textarea class="form-control" name="qr1_B2preasure" placeholder="Boiler 2 Preasure gauge reading..."></textarea>
             </div>
-          
-            <!-- Form actions -->
-            <div class="form-group">
-              <div class="col-md-12 text-right">
-                <button type="submit" value="execute">Submit</button>
-              </div>
+            <div class="col-md-6">
+              <label for="qr1_B2Temp">Boiler 2 Temperatrure</label>
+              <textarea class="form-control" name="qr1_B2temp" placeholder="Boiler 2 Temerature gague reading..."></textarea>
             </div>
-          </fieldset>
-        </form>
-      </div>
+          </div>
+
+          <!-- Glycol Tank -->
+          <div class="form-group">
+            <div class="col-md-6">
+              <label for="qr1_glycolStatus">Glycol Tank Fill</label>
+              <input type="radio" name="qr1_glycolStatus" value=100> 100% <br>                 
+              <input type="radio" name="qr1_glycolStatus" value=75> 75% <br>
+              <input type="radio" name="qr1_glycolStatus" value=50> 50% <br>
+              <input type="radio" name="qr1_glycolStatus" value=25> 25% <br>
+            </div>
+          </div>
+
+          <!-- Brine Tank -->
+          <div class="form-group">
+              <div class="col-md-6">
+              <label for="qr1_brineTankStatus">Brine Tank Fill</label>
+              <input type="radio" name="qr1_brineTankStatus" value=FULL> FULL <br>                 
+              <input type="radio" name="qr1_brineTankStatus" value=OK> OK <br>
+              <input type="radio" name="qr1_brineTankStatus" value=LOW> LOW <br>
+            </div>
+            <div class="col-md-6">
+              <label for="qr1_saltAdded">Salt Added to Brine Tank</label>
+              <input class="form-control" name="qr1_saltAdded" type="number" min="1" max="100" placeholder="Number of salt bags added...">
+            </div> 
+          </div>
+
+          <!-- Pumps -->
+          <div class="form-group">
+            <div class="col-md-6">
+              <label for="qr1_pumpGreased">Circulation Pumps Greased</label>
+              <input type="radio" name="qr1_pumpGreased" value=YES> YES <br>                 
+              <input type="radio" name="qr1_pumpGreased" value=NO> NO <br>
+            </div>
+            <div class="col-md-6">
+              <label for="qr1_pumpPreasure">Pump Preasure</label>
+              <input class="form-control" name="qr1_pumpPreasure" type="number" placeholder="Pump Head Preasure...">
+            </div>  
+          </div>
+
+          <!-- Air Compressor -->
+          <div class="form-group">
+            <div class="col-md-6 ">
+              <label for="qr1_compressorOil">Air Compressor Oil</label>
+              <input type="radio" name="qr1_compressorOil" value=OK> OK <br>                 
+              <input type="radio" name="qr1_compressorOil" value=LOW> LOW <br>
+            </div>
+            <div class="col-md-6">
+              <label for="qr1_compPreasure">Compressor Preasure to building</label>
+              <input class="form-control" name="qr1_compPreasure" type="number" placeholder="Compressor Outlet Preasure...">
+            </div>  
+          </div>
+
+          <!-- Notes -->
+          <div class="form-group">
+            <label class="col-md-4">Notes/Assessment of Boiler Room</label>
+            <div class="col-md-12">
+              <textarea class="form-control" name="qr1_notes" placeholder="notes reguarding Boiler Room condition..." rows="10"></textarea>
+            </div>
+          </div>
+        
+          <!-- Form actions -->
+          <div class="form-group">
+            <div class="col-md-12 text-right">
+              <button type="submit" value="execute">Submit</button>
+            </div>
+          </div>
+        </fieldset>
+      </form>
     </div>
   </div>
-</div>
-
 <% include partials/footer %>
   
