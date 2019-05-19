@@ -24,6 +24,13 @@ module.exports = function(app, passport) {
         
     });
 
+    app.get('/index', function(req, res) {
+        res.render('index.ejs', {
+            title : 'EVO Maint'
+        });
+        
+    });
+
     app.get('/landing', isLoggedIn, function(req, res) {
         res.render('Profile', {
             title : 'EVO Maint',
