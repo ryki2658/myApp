@@ -7,14 +7,13 @@ var db4 = mongojs('workOrderApp', ['qr1'], { useNewUrlParser: true });
 var fDate = require('../config/formatDate.js');
 var ObjectId = require("mongodb").ObjectId;
 var favicon = require('express-favicon');
-urlStr = '';
-urlString = '';
+//urlStr = '';
 module.exports = function(app, passport) {
 
     //favicon
     app.use(favicon(__dirname + '/public/favicon.ico'));
 
-    //ip and route info
+    //request, ip, and route console info
     app.use(function(req, res, next){
         req.time = new Date().toString();
         console.log('TIME: '+ req.time);
@@ -417,8 +416,8 @@ module.exports = function(app, passport) {
     // QR ==================================
     //======================================
 
-    //QR home page
-    app.get('/qr', function(req, res){
+    //QR Admin home page
+    app.get('/qrAdmin', function(req, res){
         db4.qr1.find(function(req, docs){
             res.render('qr', {
                 title: 'QR',
@@ -677,11 +676,11 @@ module.exports = function(app, passport) {
         });
     });
     
-    //CLC
-    app.get('/qr/clc/boiler1', isLoggedIn, function(req, res){
+    // SCHOOLS ROUTES ATTACHED TO ACTUAL QR CODES
+    app.get('/qr/:school/boiler1', isLoggedIn, function(req, res){
         var date = fDate.formatDate();
         var qr1Update = {
-            qr1_location: 'CLC',
+            qr1_location: req.params.school.toUpperCase(),
             qr1_details: 'BoilerRoom',
             qr1_date: date
         };
@@ -691,25 +690,11 @@ module.exports = function(app, passport) {
             info: qr1Update
         });
     });
-    
-    app.get('/qr/clc/boiler2', isLoggedIn, function(req, res){
+
+    app.get('/qr/:school/generator', isLoggedIn, function(req, res){
         var date = fDate.formatDate();
         var qr1Update = {
-            qr1_location: 'CLC',
-            qr1_details: 'BoilerRoom',
-            qr1_date: date
-        };
-        res.render('boiler', {
-            title: 'CLC Boiler2',
-            user: req.user,
-            info: qr1Update
-        });
-    });
-    
-    app.get('/qr/clc/generator', isLoggedIn, function(req, res){
-        var date = fDate.formatDate();
-        var qr1Update = {
-            qr1_location: 'CLC',
+            qr1_location: req.params.school.toUpperCase(),
             qr1_details: 'Generator',
             qr1_date: date
         };
@@ -720,10 +705,10 @@ module.exports = function(app, passport) {
         });
     });
 
-    app.get('/qr/clc/ahu1', isLoggedIn, function(req, res){
+    app.get('/qr/:school/ahu1', isLoggedIn, function(req, res){
         var date = fDate.formatDate();
         var qr1Update = {
-            qr1_location: 'CLC',
+            qr1_location: req.params.school.toUpperCase(),
             qr1_details: 'AHU1',
             qr1_date: date
         };
@@ -733,7 +718,7 @@ module.exports = function(app, passport) {
             info: qr1Update
         });
     });
-     
+     /*
     //CJjrHS
     app.get('/qr/cjhs/boiler1', isLoggedIn, function(req, res){
         var date = fDate.formatDate();
@@ -776,6 +761,7 @@ module.exports = function(app, passport) {
             info: qr1Update
         });
     });
+    */
     // =====================================
     // LOGOUT ==============================
     // =====================================
@@ -798,9 +784,10 @@ module.exports = function(app, passport) {
 // route middleware to make sure a user is logged in
 function isLoggedIn(req, res, next) {
     if (!req.isAuthenticated()) {
+        console.log(req.path);
         res.render('login.ejs', { 
             message: req.flash('loginMessage'),
-            urlStr: req.route.path
+            urlStr: req.path
         }); 
     } else {
         return next();
