@@ -14,6 +14,14 @@ module.exports = function(app, passport) {
     //favicon
     app.use(favicon(__dirname + '/public/favicon.ico'));
 
+    //ip and route info
+    app.use(function(req, res, next){
+        req.time = new Date().toString();
+        console.log('TIME: '+ req.time);
+        console.log(req.method + ' ' + 'ASKING FOR: ' + req.path + ' - ' + 'FROM: ' + req.ip);
+        next();
+        });
+
     // =====================================
     // HOME PAGE (with login links) ========
     // =====================================
@@ -412,7 +420,6 @@ module.exports = function(app, passport) {
     //QR home page
     app.get('/qr', function(req, res){
         db4.qr1.find(function(req, docs){
-            console.log(docs);
             res.render('qr', {
                 title: 'QR',
                 qr: docs
