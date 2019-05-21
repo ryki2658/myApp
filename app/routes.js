@@ -677,7 +677,7 @@ module.exports = function(app, passport) {
     });
     
     // SCHOOLS ROUTES ATTACHED TO ACTUAL QR CODES
-    app.get('/qr/:school/boiler1', isLoggedIn, function(req, res){
+    app.get('/qr/:school/boiler', isLoggedIn, function(req, res){
         var date = fDate.formatDate();
         var qr1Update = {
             qr1_location: req.params.school.toUpperCase(),
