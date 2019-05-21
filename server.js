@@ -1,5 +1,5 @@
 // set up ======================================================================
-// get all the tools we need
+// get all the tools needed
 var express = require('express');
 var app = express();
 var port = process.env.PORT || 80;
@@ -75,4 +75,4 @@ require('./app/routes.js')(app, passport); // load our routes and pass in our ap
 
 // launch ======================================================================
 app.listen(port);
-console.log('The magic happens on port ' + port);
+console.log('Listening on port ' + port);

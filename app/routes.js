@@ -7,7 +7,7 @@ var db4 = mongojs('workOrderApp', ['qr1'], { useNewUrlParser: true });
 var fDate = require('../config/formatDate.js');
 var ObjectId = require("mongodb").ObjectId;
 var favicon = require('express-favicon');
-//urlStr = '';
+
 module.exports = function(app, passport) {
 
     //favicon
@@ -705,11 +705,11 @@ module.exports = function(app, passport) {
         });
     });
 
-    app.get('/qr/:school/ahu1', isLoggedIn, function(req, res){
+    app.get('/qr/:school/ahu/:number', isLoggedIn, function(req, res){
         var date = fDate.formatDate();
         var qr1Update = {
             qr1_location: req.params.school.toUpperCase(),
-            qr1_details: 'AHU1',
+            qr1_details: 'AHU-'+ req.params.number,
             qr1_date: date
         };
         res.render('ahu', {
@@ -718,50 +718,6 @@ module.exports = function(app, passport) {
             info: qr1Update
         });
     });
-     /*
-    //CJjrHS
-    app.get('/qr/cjhs/boiler1', isLoggedIn, function(req, res){
-        var date = fDate.formatDate();
-        var qr1Update = {
-            qr1_location: 'CJjrHS',
-            qr1_details: 'Boiler1',
-            qr1_date: date
-        };
-        res.render('boiler', {
-            title: 'CLC Boiler1',
-            user: req.user,
-            info: qr1Update
-        });
-    });
-
-    app.get('/qr/cjhs/boiler2', isLoggedIn, function(req, res){
-        var date = fDate.formatDate();
-        var qr1Update = {
-            qr1_location: 'CJjrHS',
-            qr1_details: 'Boiler2',
-            qr1_date: date
-        };
-        res.render('boiler', {
-            title: 'CLC Boiler2',
-            user: req.user,
-            info: qr1Update
-        });
-    });
-
-    app.get('/qr/cjhs/Generator', isLoggedIn, function(req, res){
-        var date = fDate.formatDate();
-        var qr1Update = {
-            qr1_location: 'CJjrHS',
-            qr1_details: 'Generator',
-            qr1_date: date
-        };
-        res.render('generator', {
-            title: 'CJjrHS Generator',
-            user: req.user,
-            info: qr1Update
-        });
-    });
-    */
     // =====================================
     // LOGOUT ==============================
     // =====================================
