@@ -18,9 +18,9 @@
                 
             <!-- Description body -->
             <div class="form-group">
-              <label class="col-md-4">Details</label>
+              <label class="col-md-4">Address</label>
               <div class="col-md-12">
-                <textarea class="form-control" name="pickup_details" placeholder="Add any aditional details..." rows="5"></textarea>
+                <textarea class="form-control" name="pickup_details" placeholder="Address and aditional details..." rows="5"></textarea>
               </div>
             </div>
 
@@ -28,7 +28,7 @@
             <div class="form-group">
               <label class="col-md-4">Paid</label>
               <div class="col-md-12">
-                <textarea class="form-control" name="pickup_paid" placeholder="Add any aditional details..." rows="1"></textarea>
+                <textarea class="form-control" name="pickup_paid" placeholder="Is it paid for?.. by whom?..." rows="1"></textarea>
               </div>
             </div>
 
@@ -76,6 +76,7 @@
             <div class="form-group">
               <div class="col-md-12 text-right">
                 <button type="submit" value="execute">Add Item</button>
+                <input action="action" onclick="window.history.go(-1); return false;" type="button" value="Back" />
               </div>
             </div>
           </fieldset>
