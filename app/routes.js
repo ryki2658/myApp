@@ -71,6 +71,7 @@ module.exports = function(app, passport) {
     // =====================================
     app.get('/signup', function(req, res) {
         // render the page and pass in any flash data if it exists
+        req.logout();
         res.render('signup.ejs', { message: req.flash('signupMessage') });
     });
     // process the signup form
@@ -298,7 +299,6 @@ module.exports = function(app, passport) {
     //Edit Job 
     app.post('/tables/edit', isLoggedIn, function(req, res){
         db.Jobs.find({ _id : ObjectId(req.body.editID) }).toArray(function(err,docs){
-            console.log(docs);
             res.render("editJob", {
                 title : 'Edit',
                 job: docs,
@@ -310,8 +310,7 @@ module.exports = function(app, passport) {
     // Filter based on selection
     app.post('/jobs/filter', function(req, res){
         if(req.body.sort_selection == 'All' && req.body.job_status == undefined){  //Reload the table with all the users jobs on empty filter sort_selection
-            db.Jobs.find({ 'user' : req.user._id}).toArray(function(err,docs){
-                console.log(docs);                
+            db.Jobs.find({ 'user' : req.user._id}).toArray(function(err,docs){               
                 res.render('tables', {
                     title : 'Tables',
                     jobs: docs,
@@ -319,8 +318,6 @@ module.exports = function(app, passport) {
                 });
             });
         } else if(req.body.sort_selection == 'All' && req.body.job_status != undefined){
-            console.log('HI '+req.body.job_status);
-            console.log('HI '+req.body.sort_selection);
             db.Jobs.find({ 'user' : req.user._id, 'job_status' : req.body.job_status }).toArray(function(err,docs){
                 console.log(docs);                
                 res.render('tables', {
@@ -333,8 +330,6 @@ module.exports = function(app, passport) {
 
         } else{ //Get users filter selection from page body
             db.Jobs.find({ 'user' : req.user._id, 'job_status' : req.body.job_status, 'job_location' : req.body.sort_selection }).toArray(function(err, docs){
-                console.log('HI '+req.body.job_status);
-                console.log('HI '+req.body.sort_selection);
                 res.render('tables', {
                     title: 'Tables',
                     jobs: docs,
