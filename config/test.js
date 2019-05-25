@@ -1,7 +1,7 @@
 
 module.exports = {
 	formatDate: function formatDate(date) {
-		var date = new Date()
+		var date = new Date();
 	  	var monthNames = [
 	    	"Jan", "Feb", "Mar",
 	    	"Apr", "May", "Jun", "Jul",

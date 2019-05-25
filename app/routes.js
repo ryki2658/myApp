@@ -7,6 +7,7 @@ var db4 = mongojs('workOrderApp', ['qr1'], { useNewUrlParser: true });
 var fDate = require('../config/formatDate.js');
 var ObjectId = require("mongodb").ObjectId;
 var favicon = require('express-favicon');
+var adminArray = require('./models/admins.js');
 
 module.exports = function(app, passport) {
 
@@ -428,13 +429,23 @@ module.exports = function(app, passport) {
     //======================================
 
     //QR Admin home page
-    app.get('/qrAdmin', function(req, res){
-        db4.qr1.find(function(req, docs){
-            res.render('qr', {
-                title: 'QR',
-                qr: docs
+    app.get('/qrAdmin', isLoggedIn, function(req, res){
+        console.log(req.user.local.email);
+        // TODO filter admin only users
+        if (adminArray.includes(req.user.local.email)){
+        //if (req.user.local.email === 'tcsd' || req.user.local.email === 'ryking@tooeleschools.org') {
+            console.log('IN'+req.user.local.email);
+            db4.qr1.find(function(req, docs){
+                res.render('qr', {
+                    title: 'QR',
+                    qr: docs
+                });
             });
-        });
+            
+        } else {
+            res.redirect('/qr1');
+        }
+        
     });
     // QR user specific home Page
     app.get('/qr1', isLoggedIn, function(req, res){
