@@ -8,6 +8,7 @@ var fDate = require('../config/formatDate.js');
 var ObjectId = require("mongodb").ObjectId;
 var favicon = require('express-favicon');
 var adminArray = require('./models/admins.js');
+var RecordAdd = require('./models/QRdatabase.js');
 
 module.exports = function(app, passport) {
 
@@ -81,6 +82,24 @@ module.exports = function(app, passport) {
         failureRedirect : '/signup', // redirect back to the signup page if there is an error
         failureFlash : true // allow flash messages
     }));
+
+    // =====================================
+    // TEST +++++++++++=====================
+    // =====================================
+    app.post('/qrPostNew', isLoggedIn, function(req, res, done){
+        console.log(req.body);
+        var newRecord = new RecordAdd(req.body);
+        newRecord.save(function(err, data){
+            if (err){
+                console.error('***ERROR***: '+err);
+                return done(err);
+            }
+            done(null, data);
+            console.log(newRecord+" SAVED");
+        });
+        res.redirect('qr1');
+    });
+
     // =====================================
     // PROFILE SECTION =====================
     // =====================================
