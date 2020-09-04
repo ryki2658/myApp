@@ -24,7 +24,7 @@
     "express-validator": "^3.2.1",
     "json-stringify": "^1.0.0",
     "method-override": "^3.0.0",
-    "mongodb": "^2.2.36",
+    "mongodb": "^3.1.13",
     "mongojs": "^2.6.0",
     "mongoose": "^4.10.8",
     "morgan": "^1.9.1",
